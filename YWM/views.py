@@ -29,7 +29,7 @@ from email.mime.image import MIMEImage
 import json, os
 from django.core.files import File
 from calendar import month
-from _decimal import Decimal
+from decimal import Decimal
 
 stripe.api_key = "sk_test_PIF9aNPnjijSvto3uKp6YfW6"
 
