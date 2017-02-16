@@ -56,7 +56,7 @@ class Remise (models.Model):
     
     pour_tous = models.BooleanField(default = True)
     pour_pro = models.BooleanField(default = False)
-    utilisateurs = models.ManyToManyField(Utilisateur, null = True)
+    utilisateurs = models.ManyToManyField(Utilisateur, blank=True)
     
     
     def __str__(self):
