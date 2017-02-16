@@ -1,0 +1,74 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <header>
+        <div class="container">
+            <div class="row ">
+                    
+                <h1> Accueil Admin </h1>   
+            
+            </div>
+        </div>
+    </header>
+        
+     <div class="section">
+      <div class="container">
+        <div class="row">
+          
+          {% if messages != False %}
+            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                <div class="alert alert-dismissable alert-success">
+                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">×</button>
+                    {{messages}}</div>
+            </div>
+            {% endif %} 
+          
+          <div class="col-md-12"  style="padding-top: 15px;">
+              <a href="{% url "YWM.views.admin_ajout_remise" %}"><button type="submit" class="btn btn-default">Ajouter une remise</button></a>
+            <div class="tab-content" style="padding-top: 15px;">
+                        
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Code</th>
+                            <th>Pour Qui</th>
+                            <th>Valeur Net</th>
+                            <th>Pourcentage</th>
+                            <th>Quantité restante</th>
+                            <th>Supprimer</th>
+                            
+                        </tr>
+                    
+                
+                        {% for code in codes %}
+                        <tr>
+                            <th>{{code.code}}</th>
+                            <th>{% if code.pour_tous = True %}
+                                Pour tout le monde
+                                {% endif %}
+                                {% if code.pour_pro = True %}
+                                Pour tout les pros
+                                {% endif %}
+                                {% if code.pour_tous = False and code.pour_pro = False %}
+                                Pour des utilisateurs spécifiques
+                                {% endif %}</th>
+
+                            <th>{{code.valeur}} €</th>
+                            <th>{{code.pourcentage}}</th>
+                            <th>{{code.quantite}}</th>
+                            <th><a href="/admin/remise_supprimer/?ref={{code.id}}">Supprimer</a></th>
+                            
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+           
+        </div>
+      </div>
+    </div>
+    
+
+{% endblock %}

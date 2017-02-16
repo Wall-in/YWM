@@ -1,0 +1,65 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="section-heading">Livraison et Remise</h1>
+                    <hr class="primary">
+                    
+                   
+                    
+                    <div class="container">
+                        <div class="row ">
+                    
+                    {% if messages != False %}
+                    <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                        <div class="alert alert-dismissable alert-success">
+                        <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">×</button>
+                            {{messages}}</div>
+                    </div>
+                    {% endif %} 
+                    
+                    <div style="padding-top : 15px; padding-bottom : 15px;">         
+                        <div class="col-md-6">
+                            <div class="jumbotron">
+                            <h1>Adresse de livraison</h1>
+                            <p>Vérifiez l'exactitude de l'adresse de livraison. Votre produit vous sera livré a cette adresse.</p>
+                            
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="col-md-6 text-left">
+                            
+                         <form method="post" action="{% url "YWM.views.boutique_confirmation_adresse" %}">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input class="btn btn-primary btn-lg btn-block " type="submit" value="Confirmer" />
+                            </form>
+                            
+                        </div>
+
+                        
+     
+                 
+                      </div>
+                   </div>
+                   
+                </div>
+            </div>
+        </div>
+        
+                
+          
+            </div>
+            </div>
+            </div>
+
+   
+
+{% endblock %}

@@ -1,0 +1,47 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <header>
+        <div class="container">
+            <div class="row ">
+                    
+                <h1>Import Image </h1>   
+            
+            </div>
+        </div>
+    </header>
+        
+     <div class="section">
+      <div class="container">
+        <div class="row"> 
+                    
+          <div style="padding-top : 15px; padding-bottom : 15px;">         
+          <div class="col-md-6">
+            <div class="jumbotron">
+              <h1>Import d'image</h1>
+              <p>Aller!</p>
+            </div>
+          </div>
+          
+          
+          <div class="col-md-6">
+              
+           
+              <form action="{% url "YWM.views.import_image" %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                <input class="btn btn-primary btn-xl" type="submit" value="Ajouter" />
+                </form>
+                
+            
+          </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+{% endblock %}

@@ -1,0 +1,202 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+
+        <div class="container">
+            <div class="row ">
+                    
+                <h1 class="section-heading"> Mon Tableau de Bord 
+                    {% if utilisateur.professionnel == True %}
+                    <small> COMPTE PROFESSIONNEL</small>
+                    {% endif %}
+                </h1>   
+                <hr class="primary">
+            
+            </div>
+        </div>
+
+        
+     <div class="section">
+      <div class="container">
+        <div class="row">
+            
+            {% if messages != False %}
+            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                <div class="alert alert-dismissable alert-success">
+                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">×</button>
+                    {{messages}}</div>
+            </div>
+            {% endif %} 
+       
+                        <div class="container">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h2>Mes Commandes</h2>
+                                
+                                <div class="tabbable" id="tabs-768328">
+                                    
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="panel-852154">
+                                            
+                                            <div class="col-md-12" style="padding-top: 10px;">
+            
+                                                {% if commandes_utilisateur %}
+                                                <table class="table table-hover"> 
+                                                    <tr>
+                                                            <th> Numéro de commande </th>
+                                                            <th> Produit(s) </th>
+                                                            <th>Total </th>
+                                                    </tr>
+                                                
+                                                        {% for commande in commandes_utilisateur %}
+                                                
+                                                            <tr> 
+                                                                <th> {{commande.numero}} </br> Etat : {{commande.etat}} </br> Remise : {{commande.remise}}</th>
+                                                                <th>  
+                                                                    
+                                                                    <table class="table table-hover"> 
+                                                                            <tr>
+                                                                                <th>Produit {{commande.produit_cmds}}</th>
+                                                                                <th>Prix</th>
+                                                                                <th>Quantite</th>
+                                                                                <th>Sous Total</th>
+                                                                            </tr>
+                                                                            
+                                                                            {% for produit in commande.relationcommande.all %}
+                                                                    
+                                                                                <tr>
+                                                                                    <th>{{produit.produit}}</th>
+                                                                                    <th>{{produit.produit.prix}}€</th>
+                                                                                    <th>{{produit.quantite}}</th>
+                                                                                    <th>{{produit.sous_total}}€</th>
+                                                                                </tr>
+                                                                            {% endfor %}
+                                                        
+                                                                        </table>
+                                                                </th>
+                                                                <th>
+                                                                    {{commande.total}}€
+                                                                </th>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    
+                                                </table> 
+
+                                                {% else %}
+                                                <h4>Vous n'avez pas de commande</h4>
+                                                {% endif %}
+        
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="tab-pane" id="panel-678864">
+                                            
+                                            <div class="col-md-12" style="padding-top: 10px;">
+            
+                                                {% if commandes_utilisateur %}
+                                                <table class="table table-hover"> 
+                                                    <tr>
+                                                            <th> Numéro de commande </th>
+                                                            <th> Produit(s) </th>
+                                                            <th>Total </th>
+                                                    </tr>
+                                                
+                                                        {% for commande in commandes_utilisateur %}
+                                                
+                                                            <tr> 
+                                                                <th> {{commande.numero}} </br> Etat : {{commande.etat}}</th>
+                                                                <th>  
+                                                                    
+                                                                    <table class="table table-hover"> 
+                                                                            <tr>
+                                                                                <th>Produit {{commande.produit_cmds}}</th>
+                                                                                <th>Prix</th>
+                                                                                <th>Quantite</th>
+                                                                                <th>Sous Total</th>
+                                                                            </tr>
+                                                                            
+                                                                            {% for produit in commande.relationcommande.all %}
+                                                                    
+                                                                                <tr>
+                                                                                    <th>{{produit.produit}}</th>
+                                                                                    <th>{{produit.produit.prix}}€</th>
+                                                                                    <th>{{produit.quantite}}</th>
+                                                                                    <th>{{produit.sous_total}}€</th>
+                                                                                </tr>
+                                                                            {% endfor %}
+                                                        
+                                                                        </table>
+                                                                </th>
+                                                                <th>
+                                                                    {{commande.total}}€
+                                                                </th>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    
+                                                </table> 
+
+                                                {% else %}
+                                                <h4>Vous n'avez pas de commande</h4>
+                                                {% endif %}
+        
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="panel-group" id="panel-105512">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <a class="panel-title" data-toggle="collapse" data-parent="#panel-105512" href="#panel-element-960917">Mes Informations Personnelles</a>
+                                        </div>
+                                        <div id="panel-element-960917" class="panel-collapse collapse in">
+                                            <div class="panel-body">
+                                                <h4>Informations personnelles :</h4>
+                                                <p>
+                                                    <strong>Nom :</strong> {{utilisateur.last_name}} </br>
+                                                    <strong>Prénom :</strong> {{utilisateur.first_name}} </br>
+                                                    <strong>E-mail :</strong> {{utilisateur.username}} </br>
+                                                    {% if utilisateur.professionnel == True %}
+                                                    <strong>Entreprise :</strong> {{utilisateur.nom_entreprise}} </br>
+                                                    <strong>Numéro SIRET :</strong> {{utilisateur.numero_siret}} </br>
+                                                    {% endif %}
+                                                </p>
+                                                
+                                                <a href="/user/compte/changement_mdp" class="btn btn-primary btn-xl">Changez de mot de passe</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <a class="panel-title" data-toggle="collapse" data-parent="#panel-105512" href="#panel-element-289451">Mon Adresse</a>
+                                        </div>
+                                        <div id="panel-element-289451" class="panel-collapse collapse in">
+                                            <div class="panel-body">
+                                                <h4>Adresse de livraison :</h4>
+                                                <p>
+                                                    <strong>Rue :</strong> {{utilisateur.voie_livraison}} </br>
+                                                    <strong>Code Postal :</strong> {{utilisateur.code_postal_livraison}} </br>
+                                                    <strong>Ville :</strong> {{utilisateur.lieu_livraison}} </br>
+                                                    <strong>Pays :</strong> {{utilisateur.pays_livraison}} </br>
+                                                </p>
+                                                
+                                                <a href="/user/compte/changement_adresse" class="btn btn-primary btn-xl">Changez votre adresse</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+{% endblock %}

@@ -1,0 +1,114 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            
+                <div class="col-md-12 text-center">
+                    <h1 class="section-heading">Merci pour votre confiance</h1>
+                    <hr class="primary">
+                    
+                   
+                    
+                    <div class="container">
+                        <div class="row ">
+                    
+                    {% if messages != False %}
+                    <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                        <div class="alert alert-dismissable alert-success">
+                        <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">×</button>
+                            {{messages}}</div>
+                    </div>
+                    {% endif %} 
+                    
+                    <div style="padding-top : 15px; padding-bottom : 15px;">  
+                        
+                        <div class="col-md-8">
+                            
+                            <div class="col-xs-12 text-left">
+                                <h3>Récapitulatif de la commande n°{{commande.numero}}</h3>
+                                <hr class="primary">
+                            </div>
+                            <hr class="primary">
+                            {% for produit in commande.relationcommande.all %}
+                        
+                            <div class="row">
+                                <div class="col-md-3 col-xs-3 hidden-xs"><img class="img-responsive" style="max-height: 150px;" src="{{produit.produit.photo1.url}}">
+                                </div>
+                                <div class="col-md-6 col-xs-6">
+                                    <h4 class="product-name"><strong>{{produit.produit.nom}}</strong></h4><h4><small>{{produit.produit.infos}}</small></h4>
+                                </div>
+                                
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="col-xs-5 text-right">
+                                        <h5><strong>Q : {{produit.quantite}}</strong></h5>
+                                        </div>
+
+                                        <div class="col-xs-7 text-right">
+                                            <h5><strong>{% widthratio produit.prix 1 produit.quantite %}€ </strong></br>(P.U : {{produit.prix}}<span class="text-muted"></span>€)</h5>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                            
+                            
+                            <div class="row">
+                            
+                                    <div class="col-xs-12">
+                                        <h4 class="text-right">Sous-Total <strong>{{commande.total|add:commande.remise}}€</strong></h4>
+                                    </div>
+                                    
+                                    <div class="col-md-12">
+                                        <hr class="primary">
+                                            <div class="col-md-6">
+                                                
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h4 class="text-right">Frais de livraison <strong>Compris</strong></h4>
+                                            </div>
+                                            
+                                            </div>
+                                            <div class="col-md-12">
+                                                <hr class="primary">
+                                                
+                                                    <div class="col-md-12">
+                                                        <h4 class="text-right">Remise <strong>{{commande.remise}}€</strong></h4>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-12">
+                                                        <h3 class="text-right">Total <strong>{{commande.total}}€</strong></h3>
+                                                    </div>
+                                                <hr class="primary">
+                                            </div>
+                                        
+                            </div>
+                       
+                        
+                        </div>
+                        
+                               
+                        <div class="col-md-4">
+                            <div class="jumbotron">
+                            <h1>Mon compte</h1>
+                            <p>Retrouvez et suivez vos commandes dans votre <a href="{% url "YWM.views.user_compte_dashboard" %}"><strong>espace membre</strong></a>.</p>
+                            
+                            </div>
+                        </div>
+                        
+                      </div>
+                   </div>
+                   
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>           
+
+{% endblock %}

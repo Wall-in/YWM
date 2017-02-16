@@ -1,0 +1,312 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		
+		<script type="text/javascript">
+            $(function () {
+                Highcharts.chart('container', {
+                    title: {
+                        text: '',
+                        x: -20 //center
+                    },
+                    
+                     xAxis: {
+                                type: 'datetime',
+                                dateTimeLabelFormats: {
+                                    day: '%e %b'
+                                }
+                            },
+                    yAxis: {
+                        title: {
+                            text: 'En prix (€)'
+                        },
+                        plotLines: [{
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                        }]
+                    },
+                    tooltip: {
+                        valueSuffix: '€'
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                        borderWidth: 0
+                    },
+                    series: [{
+                        name: 'Vente',
+                        data: {{graphique}},
+                        
+                        pointStart: Date.UTC({{date_avant|date:"Y"}}, {{duree_axe_x_m}}, {{duree_axe_x_d}}),
+                        pointInterval: 24 * 3600 * 1000 
+                    }]
+                });
+            });
+		</script>
+
+<body>
+        <div class="container">
+            <div class="row ">
+                    
+                <h1 class="section-heading"> Admin Dashboard</h1>   
+                <hr class="primary">
+
+                
+            </div>
+        </div>
+
+     <div class="section">
+      <div class="container">
+        <div class="row">
+            
+            {% if messages != False %}
+            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                <div class="alert alert-dismissable alert-success">
+                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">×</button>
+                    {{messages}}</div>
+            </div>
+            {% endif %} 
+            
+               
+          <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-comments fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{produits|length}}</div>
+                                    <div>Produits</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url "YWM.views.admin_produits" %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Voir et Modifier</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{commandes|length}}</div>
+                                    <div>Commandes</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url "YWM.views.admin_commandes" %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Parcourir</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{utilisateurs|length}}</div>
+                                    <div>Utilisateurs</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url "YWM.views.admin_utilisateurs" %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Parcourir</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-support fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">ICI</div>
+                                    <div>Ajouter un Produit, Catégorie...etc</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url "YWM.views.admin_ajout_produit" %}">
+                            <div class="panel-footer">
+                                <span class="pull-left">Ajouter</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Ventes du {{date_avant|date:"d M Y"}} au {{date_apres|date:"d M Y"}} (Total : {{total_commandes}}€)
+                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                          
+                          <div class="pull-right" >
+                                
+                                <form class="form-inline" action="{% url "YWM.views.admin_accueil" %}" method="post">
+                                    
+                                    {% csrf_token %}
+                                    
+                                    <div class="form-group">
+                                        
+                                        <input type="date" class="form-control"  placeholder="Date à partir" name="date_avant">
+                                    </div>
+                                    <div class="form-group">
+                                        
+                                        <input type="date" class="form-control" id="exampleInputPassword3" placeholder="Date jusqu'à'" name="date_apres">
+                                    </div>
+                                   
+                                    <button type="submit" class="btn btn-default">Filtrer</button>
+                                    </form>
+                              
+                           
+                            </div>      
+                                    
+                      <script src="https://code.highcharts.com/highcharts.js"></script>
+                    
+                        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; padding-bottom: 25px;"></div>
+                                           
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+           
+                </div>
+                <!-- /.col-lg-8 -->
+                
+                
+                
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Dernières Commandes
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="list-group">
+                                {% for cmd in commandes_limitees %}
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-comment fa-fw"></i> <button class="btn btn-default" type="button" data-toggle="modal" data-target="#{{cmd.numero}}">N°{{cmd.numero}}</button>
+                                    <span class="pull-right text-muted small"><em>{{cmd.date|date:"d M Y"}}</em>
+                                    </span>
+                                </a>
+
+                                <div class="modal fade" tabindex="-1" id="{{cmd.numero}}" role="dialog" aria-labelledby="gridSystemModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="gridSystemModalLabel">N° : {{cmd.numero}}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                            <div class="col-md-12"><h2><strong>Numéro commande :</strong> {{cmd.numero}}</h2></div>
+                                            
+                                            <hr>
+                                            
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12"><h3>Coordonnées :</h3></div>
+                                                <div class="col-md-6">
+                                                        
+                                                        <h4>Personnelles :</h4>
+                                                        <p>Prénom : {{cmd.client.first_name}} </br>
+                                                            Nom : {{cmd.client.last_name}} </br>
+                                                            E-mail : {{cmd.client.username}} </br>
+                                                            </p>
+                                                            
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        
+                                                        <h4>Adresse :</h4>
+                                                        <p>Voie : {{cmd.voie_livraison}} </br>
+                                                        Code Postal : {{cmd.code_postal_livraison}} </br>
+                                                        Ville : {{cmd.lieu_livraison}} </br>
+                                                        Pays : {{cmd.pays_livraison}} </br>
+                                                        </p>
+                                                        
+                                                    </div>
+                                            </div>
+                                            
+                                            <hr>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-12"><h3>Produits:</h3></div>
+                                                    {% for produit in cmd.relationcommande.all %}
+                                                        <div class="col-md-6"> 
+                                                        
+                                                        <p>Référence Produit : {{produit.produit.reference}} </br>
+                                                        Nom du produit : {{produit.produit.nom}} </br>
+                                                        Quantite : {{produit.quantite}} </br>
+                                                        Prix : {{produit.produit.prix}} </br>
+                                                        Sous-total : {{produit.sous_total}}</p>
+                                                        
+                                                        </div>
+                                                    {% endfor %}
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                            
+                                                
+                                        </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                                {% endfor %}
+                                
+                                
+                            </div>
+                            <!-- /.list-group -->
+                            <a  href="{% url "YWM.views.admin_commandes" %}" class="btn btn-default btn-block">Voir toutes les commandes</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    
+            </div>
+        </div>
+      </div>
+    </div>
+
+
+
+{% endblock %}

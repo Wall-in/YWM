@@ -1,0 +1,185 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <header>
+        <div class="container">
+            <div class="row ">
+                    
+                <h1> Commandes</h1>   
+            
+            </div>
+        </div>
+    </header>
+        
+    <body  id="tools">
+     <div class="section">
+      <div class="container">
+        <div class="row">
+          
+          {% if messages != False %}
+            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                <div class="alert alert-dismissable alert-success">
+                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">×</button>
+                    {{messages}}</div>
+            </div>
+            {% endif %} 
+          
+          <div class="col-md-12">
+           
+           <form action="{% url "YWM.views.admin_commandes" %}" method="POST" class="form-inline" style="padding-top: 15px; padding-bottom: 15px;">
+            {% csrf_token %}
+            
+             
+            <div class="form-group">
+                <input class="form-control" id="numero" name="numero" placeholder="Numéro Commande">
+            </div>
+            
+            
+            <div class="form-group">
+                <select class="selectpicker" title="{{commande.etat}}" name="etat_select">
+                    <option value="Tout">Tout</option>
+                    <option value="Non Traitée">Non traitée</option>
+                    <option value="Traitée">Traitée</option>
+                    <option value="Envoyée">Envoyée</option>
+                    <option value="Reçue">Reçue</option>
+                </select>
+                
+                </div>  
+            <button type="submit" class="btn btn-default">Filtrer</button> 
+            </form>
+           
+             <table class="table table-striped" id="matrix" cellpadding="0" cellspacing="0">
+                <thead> 
+                <tr>
+                    <th>N° de commande</th>
+                    <th>Acheteur</th>
+                    <th>Montant</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                
+                <tbody>  
+                
+                {% for commande in commandes %}
+                <tr>
+                    <th><button class="btn btn-default" type="button" data-toggle="modal" data-target="#{{commande.numero}}">{{commande.numero}}</button></th>
+                    <th>{{commande.client.username}}
+
+                        {% if commande.client.professionnel == True %}
+                        <small>(PRO)</small>
+                        {%else%}
+                        <small>(PARTICULIER)</small>
+                        {% endif %}
+
+                    </th>
+                    <th>{{commande.total}} €</th>
+                    <th>{{commande.date|date:"d M Y"}}</th>
+                    <th>
+                        
+                    <form action="/admin/traitementcmd/?ref={{commande.numero}}" method="POST" class="form-inline">
+                        {% csrf_token %}
+                    
+                        <div class="form-group">
+                                                                                                                                
+                            <select class="selectpicker" title="{{commande.etat}}" name="etat">
+                                {% for l in liste %}
+                                {% if l == commande.etat %}
+                                <option value="{{l}}" selected>{{l}}</option>
+                                {% else %}
+                                <option value="{{l}}">{{l}}</option>
+                                {% endif %}
+                                {% endfor %}
+                                
+                            </select>
+                            
+                            </div>  
+                            
+                        <button type="submit" class="btn btn-default">Mettre à jour</button> 
+                        </form>
+                                  
+                        
+                    </th>
+                </tr>
+                
+                
+                <div class="modal fade" tabindex="-1" id="{{commande.numero}}" role="dialog" aria-labelledby="gridSystemModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="gridSystemModalLabel">N° : {{commande.numero}}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                            <div class="col-md-12"><h2><strong>Numéro commande :</strong> {{commande.numero}}</h2> <h3> {{commande.etat}}</h3></div>
+                            
+                            <hr>
+                            
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12"><h3>Coordonnées :</h3></div>
+                                <div class="col-md-6">
+                                        
+                                        <h4>Personnelles :</h4>
+                                        <p>Prénom : {{commande.client.first_name}} </br>
+                                            Nom : {{commande.client.last_name}} </br>
+                                            E-mail : {{commande.client.username}} </br>
+                                            </p>
+                                            
+                                    </div>
+                                    <div class="col-md-6">
+                                        
+                                        <h4>Adresse :</h4>
+                                        <p>Voie : {{commande.voie_livraison}} </br>
+                                        Code Postal : {{commande.code_postal_livraison}} </br>
+                                        Ville : {{commande.lieu_livraison}} </br>
+                                        Pays : {{commande.pays_livraison}} </br>
+                                        </p>
+                                        
+                                    </div>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="row">
+                                <div class="col-md-12"><h3>Produits:</h3></div>
+                                    {% for produit in commande.relationcommande.all %}
+                                        <div class="col-md-6"> 
+                                        
+                                        <p>Référence Produit : {{produit.produit.reference}} </br>
+                                        Nom du produit : {{produit.produit.nom}} </br>
+                                        Quantite : {{produit.quantite}} </br>
+                                        Prix : {{produit.produit.prix}} </br>
+                                        Sous-total : {{produit.sous_total}}</p>
+                                        
+                                        </div>
+                                    {% endfor %}
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                            
+                                
+                        </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                 
+                {% endfor %}
+                
+                </tbody>
+            </table>
+            
+          </div>
+           
+        </div>
+      </div>
+    </div>
+</body>   
+
+{% endblock %}

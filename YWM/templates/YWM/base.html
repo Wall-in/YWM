@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+    {% load staticfiles %}
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+    <title>YWM project</title>
+
+    <!-- glyphicon link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <!-- CSS -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'vendor/metisMenu/metisMenu.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'dist/css/sb-admin-2.css' %}" rel="stylesheet">
+    
+    <link href="{% static 'bootstrap/css/bootstrap-select.min.css' %}" rel="stylesheet">
+    
+    <link href="{% static 'bootstrap/css/slider.css' %}" rel="stylesheet">
+
+    <link href="{% static 'bootstrap/css/YWM.css' %}" rel="stylesheet">
+    
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Arsenal" rel="stylesheet">
+
+    
+
+    <!-- LESS -->
+    <link href="{% static 'bootstrap/less/Mody.less' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/less/slider.less' %}" rel="stylesheet">
+
+    <!-- Javascript Stripe -->
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    
+    
+    <!-- Bande de tête -->
+    
+    <div class="bande">
+        <div class="container hidden-xs">
+        <p style="text-align: left;"> <strong>SERVICE CLIENT <span style="color : #cf000f;">GRATUIT</span></strong> 06 09 07 06 56 <span style="float: right;"> <strong>PAIEMENT CB <span style="color : #cf000f;">SECURISE</span> - LIVRAISON GRATUITE </strong> </p>
+        </div>
+    </div>
+    
+    
+    <!-- Naviguation -->
+    
+ <nav class="navbar navbar-default">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/"><img alt="Mody" src="{% static 'img/logo.png' %}" class="img-responsive" style="max-height: 40px; padding-top:10px;"></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/boutique">La Boutique</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">A propos</a></li>
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %}
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Mon compte<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+              
+            <li><a href="/user/compte/dashboard">Mon Tableau de Bord</a></li>
+            <li><a href="/user/compte/commandes">Mes Commandes</a></li>
+            
+            <li role="separator" class="divider"></li>
+            <li><a href="/deconnexion">Se déconnecter</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li><a href="/inscription"><span class="glyphicon glyphicon-user"> </span>  S'inscrire</a></li>
+        <li><a href="/connexion"><span class="glyphicon glyphicon-log-in"> </span>  Se Connecter</a></li>
+        {% endif %}
+         <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span> Panier ({{total}}€)<span class="caret"></span></a>
+          <ul class="dropdown-menu dropdown-cart" role="menu">
+              
+              
+              {% for element, key in elements.items %}
+              <li>
+                  <span class="item">
+                    <span class="item-left">
+                        <img src="{{element.photo1.url}}" class="img-responsive" style="max-height: 25px;" alt="{{element.nom}}" />
+                        <span class="item-info">
+                            <span>{{element.nom|slice:":14"}}(x{{key}})...</span>
+                            <span>{% widthratio element.prix 1 key %}€</span>
+                        </span>
+                    </span>
+                    <span class="item-right">
+                        <a href="/boutique/supprimer/?ref={{element.reference}}"><button class="btn btn-xs btn-danger pull-right">x</button></a>
+                    </span>
+                </span>
+              </li>
+              
+              {% endfor %}
+             
+              <li class="divider"></li>
+              <li><a class="text-center" href="/boutique/panier">Mon Panier</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+    
+    </head>
+    
+    {% block content %}
+    
+    
+    {% endblock %}
+
+    <footer class="section section-primary">
+     
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <h1 style="text-align: center;">Yes We Meuble</h1>
+            <h5 style="text-align: center;" >Copyright 2017 - Wall-In - Powered by MGB CORP - <a href="{% url "YWM.views.admin_accueil" %}">Admin</a></h5>
+          </div>
+          
+        </div>
+      </div>
+    </footer>
+        
+        
+<!-- Plugin -->
+
+    <!-- jQuery -->
+    <script src="{% static 'jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'jquery/moment.min.js'%}"></script>
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap-select.js'%}"></script>
+    
+    <script src="{% static 'bootstrap/js/bootstrap-slider.js'%}"></script>
+    
+    <script src="{% static 'bootstrap/js/amcharts/amcharts.js'%}"></script>
+    <script src="{% static 'bootstrap/js/amcharts/serial.js'%}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{% static 'vendor/metisMenu/metisMenu.min.js' %}"></script>
+
+
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static 'dist/js/sb-admin-2.js"></script>
+    
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="{% static 'scrollreveal/scrollreveal.min.js' %}"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Template mailing Alsacreations</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width">
+    <style type="text/css">
+    /* Fonts and Content */
+    body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; font-size:14px; }
+    body { background-color: #cf000f; margin: 0; padding: 0; -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
+    h2{ padding-top:12px; /* ne fonctionnera pas sous Outlook 2007+ */color:#cf000f; font-size:22px; }
+
+    </style>
+   
+</head>
+<body style="margin:0px; padding:0px; -webkit-text-size-adjust:none;">
+
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#cf000f" >
+        <tbody>
+            <tr>
+                <td align="center" bgcolor="#cf000f">
+                    <table  cellpadding="0" cellspacing="0" border="0">
+                        <tbody>                            
+                            <tr>
+                                <td class="w640"  width="640" height="10"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="w640"  width="640" height="10"></td>
+                            </tr>
+
+
+                            <!-- entete -->
+                            <tr class="pagetoplogo">
+                                <td class="w640"  width="640">
+                                    <table  class="w640"  width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#F2F0F0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="w30"  width="30"></td>
+                                                <td  class="w580"  width="580" valign="middle" align="left">
+                                                    <div class="pagetoplogo-content">
+                                                        <img class="w580" style="text-decoration: none; padding-bottom : 10px; padding-top: 10px; display: block; color:#cf000f; font-size:30px;" src="cid:logo" alt="Mody" width="450px" height="auto"/>
+                                                    </div>
+                                                </td> 
+                                                <td class="w30"  width="30"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- separateur horizontal -->
+                            <tr>
+                                <td  class="w640"  width="640" height="1" bgcolor="#d7d6d6"></td>
+                            </tr>
+
+                             <!-- contenu -->
+                            <tr class="content">
+                                <td class="w640" class="w640"  width="640" bgcolor="#ffffff">
+                                    <table class="w640"  width="640" cellpadding="0" cellspacing="0" border="0">
+                                        <tbody>
+                                            <tr>
+                                                <td  class="w30"  width="30"></td>
+                                                <td  class="w580"  width="580">
+                                                    <!-- une zone de contenu -->
+                                                    <table class="w580"  width="580" cellpadding="0" cellspacing="0" border="0">
+                                                        <tbody>                                                            
+                                                            <tr>
+                                                                <td class="w580"  width="580">
+                                                                    <h2 style="color:#cf000f; font-size:22px; padding-top:12px;">
+                                                                       Bonjour  {{utilisateur.first_name}} {{utilisateur.last_name}}</h2>
+
+                                                                </td>
+                                                            </tr>
+                                                           
+                                                        </tbody>
+                                                    </table>
+                                                    <!-- fin zone -->                                                   
+
+                                                    <!-- une autre zone de contenu -->
+                                                   <table class="w580"  width="580" cellspacing="0" cellpadding="0" border="0">
+                                                        <tbody>
+                                                           
+                                                              <tr>
+                                                                    Nous sommes très heureux de accueillir chez Mody!
+                                                              </tr>
+                                                              <tr>     
+                                                                    <strong>Login / Email : </strong>{{utilisateur.username}}
+
+                                                              </tr>
+                                                              
+                                                                    {% if utilisateur.professionnel == True %}
+                                                              <tr>
+                                                                    <strong>Entreprise :</strong> {{utilisateur.nom_entreprise}} 
+                                                              </tr>
+                                                              <tr>
+                                                                    <strong>Numéro SIRET :</strong> {{utilisateur.numero_siret}}
+                                                              </tr>
+                                                                    {% endif %}
+                                                              <tr>
+                                                                    Bon shooping sur : XXXXXXXXXX
+                                                              </tr>
+
+                                                               <tr>
+                                                                    <td class="w580"  width="580" height="1" bgcolor="#c7c5c5"></td>
+                                                               </tr> 
+                                                               <tr>
+                                                                    Ceci est un mail automatique, Merci de ne pas y répondre.
+                                                               </tr> 
+                                                                
+                                                        </tbody>
+
+                                                    </table>                                              
+
+                                                </td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!--  separateur horizontal de 15px de  haut-->
+                            <tr>
+                                <td class="w640"  width="640" height="15" bgcolor="#ffffff"></td>
+                            </tr>
+
+                    
+
+                            <!-- pied de page -->
+                            <tr class="pagebottom">
+                                <td class="w640"  width="640">
+                                    <table class="w640"  width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#c7c7c7">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="5" height="10"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="w30"  width="30"></td>
+                                                <td class="w580"  width="580" valign="top">
+                                                    <p align="right" class="pagebottom-content-left">
+                                                        <a style="color:#cf000f;" href=""><span style="color:#cf000f;">Mody | Mobilier Design - Wall-In - MGB CORP</span></a>
+                                                    </p>
+                                                </td>
+
+                                                <td class="w30"  width="30"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5" height="10"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w640"  width="640" height="60"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,108 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <header>
+        <div class="container">
+            <div class="row ">
+                    
+                <h1> Modification Produit </h1>   
+            
+            </div>
+        </div>
+    </header>
+        
+     <div class="section">
+      <div class="container">
+        <div class="row">
+          
+          {% if messages != False %}
+            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                <div class="alert alert-dismissable alert-success">
+                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">×</button>
+                    {{messages}}</div>
+            </div>
+            {% endif %} 
+          
+          <div style="padding-top : 15px; padding-bottom : 15px;">         
+            <div class="col-md-4">
+                <div class="jumbotron">
+                <h2>Modification du Produit : {{produit.nom}}</h2>
+                <p>Pensez à sauvegarder après modification!</p>
+ 
+                </div>
+            </div>
+            
+            
+            <div class="col-md-8">
+                
+            <form action="" method="post" enctype="multipart/form-data" style="padding-bottom : 15px;">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="fieldWrapper">
+                            {{ field.errors }}
+                          
+                            {{field.label_tag}}
+                            {{field}}
+                            {% if field.help_text %}
+                            {{ field.value }}
+                            <p class="help">{{ field.help_text|safe }}</p>
+                            
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <label>Les catégories, couleurs et attribues!</label> </br>
+                    
+                            <select class="selectpicker" multiple data-live-search="true" data-live-search-placeholder="Rechercher" multiple title="Catégorie(s)" name="Categorie">
+                                    {% for categorie in categories %}
+                                        {% if categorie in produit_categorie %}
+                                        <option value="{{categorie.nom}}" selected>{{categorie.nom}}</option>
+                                        {% else %}
+                                        <option value="{{categorie.nom}}">{{categorie.nom}}</option>
+                                        {% endif %}
+                                        
+                                    {% endfor %}
+                            </select>
+                            
+                            <select class="selectpicker" multiple data-live-search="true" data-live-search-placeholder="Rechercher" multiple title="Couleur(s)" name="Couleur"> 
+
+                                    {% for couleur in couleurs %}
+                                        
+                                        {% if couleur in produit_couleurs %}
+                                        <option value="{{couleur.nom}}" selected>{{couleur.nom}}</option>
+                                        {% else %}
+                                        <option value="{{couleur.nom}}">{{couleur.nom}}</option>
+                                        {% endif %}
+                                        
+                                    {% endfor %}
+
+                            </select>
+                            <select class="selectpicker" multiple data-live-search="true" data-live-search-placeholder="Rechercher" multiple title="Caractérisitque(s)" name="Attribue">   
+
+                                    {% for attribue in attribues %}
+                                        
+                                        {% if attribue in produit_attribues %}
+                                        <option value="{{attribue.nom}}" selected>{{attribue.nom}}</option>
+                                        {% else %}
+                                        <option value="{{attribue.nom}}">{{attribue.nom}}</option>
+                                        {% endif %}
+                                        
+                                    {% endfor %}
+
+                            </select>
+                            
+                    <input class="btn btn-primary btn-xl" type="submit" value="Modifier" />
+                </form>
+                
+            </div>
+            
+          </div>
+           
+        </div>
+      </div>
+    </div>
+    
+
+{% endblock %}

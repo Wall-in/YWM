@@ -1,0 +1,130 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="section-heading">{{produit.nom}}</h1>
+                    <hr class="primary">
+                    
+                   
+                    
+                    <div class="container">
+                        <div class="row ">
+                    
+                         <div class="col-md-6">
+                            <div id='carousel-custom' class='carousel slide' data-ride='carousel'>
+                                <div class='carousel-outer'>
+                                    <!-- me art lab slider -->
+                                    <div class='carousel-inner '>
+                                        <div class='item active'>
+                                            <img src='{{produit.photo1.url}}' alt=''id="zoom_05"  data-zoom-image="{{produit.photo1.url}}"/>
+                                        </div>
+                                        <div class='item'  id="zoom_05">
+                                            <img src='{{produit.photo2.url}}' alt='' data-zoom-image="{{produit.photo2.url}}" />
+                                        </div>
+                                        <div class='item'>
+                                            <img src='{{produit.photo3.url}}' alt='' data-zoom-image="{{produit.photo3.url}}" />
+                                        </div>
+                           
+                                        <script>
+                                            $("#zoom_05").elevateZoom({ zoomType : "inner", cursor: "crosshair" });
+                                            </script>
+                                                    </div>
+                                                        
+                                                    <!-- sag sol -->
+                                                    <a class='left carousel-control' href='#carousel-custom' data-slide='prev'>
+                                                        
+                                                    </a>
+                                                    <a class='right carousel-control' href='#carousel-custom' data-slide='next'>
+                                                       
+                                                    </a>
+                                                </div>
+                                                
+                                                <!-- thumb -->
+                                                <ol class='carousel-indicators mCustomScrollbar meartlab'>
+                                                    <li data-target='#carousel-custom' data-slide-to='0' class='active'><img src='{{produit.photo1.url}}' alt='' /></li>
+                                                    <li data-target='#carousel-custom' data-slide-to='1'><img src='{{produit.photo2.url}}' alt='' /></li>
+                                                    <li data-target='#carousel-custom' data-slide-to='2'><img src='{{produit.photo3.url}}' alt='' /></li>
+
+                                                </ol>
+                                            </div>
+
+                                            <script type="text/javascript">
+
+                                            $(document).ready(function() {
+                                                $(".mCustomScrollbar").mCustomScrollbar({axis:"x"});
+                                            });
+                                            </script>
+
+                            
+                            </div>
+                            
+                            
+                            <div class="col-md-6" style="text-align : left;   padding-left: 60px;   padding-top: 0px; ">
+
+
+                                <h2>Prix Unitaire : {{produit.prix}} €</h2><p style="position : relative"></p>
+                                <h3>Frais de livraison : compris dans le prix</h3>
+                                <h3>Description : </h3><p>{{produit.description}}</p>  
+                                <h3>Info : </h3><p>{{produit.infos}}</p>
+                     
+                                
+
+                                <form class="form-inline" action="/boutique/ajout/?ref={{produit.reference}}" method="POST">
+                                 {% csrf_token %}
+                                <div class="form-group">
+                                    <input class="form-control" id="exampleInputAmount" name="quantite" placeholder="Quantité">
+                                </div>
+                               
+                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                                </form>
+                                
+                            </div>      
+                            
+                            <div class="col-md-12">
+                              
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Produit Caractéristique</a></li>
+                                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Infos</a></li>
+                                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Livraison</a></li>
+                   
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                       <h2>{{produit.nom}}</h2>
+                                       <p> Description : {{produit.description}}</p>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="profile">
+                                        <h2>{{produit.nom}}</h2>
+                                       <p>Infos : {{produit.infos}}</p>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="messages">
+                                        <h2>{{produit.nom}}</h2>
+                                       <p>Information sur la livraison : {{produit.conditionnement}}</p>
+                                    </div>
+                                </div>
+
+                   
+                   </div>
+                   </div>
+                   
+                </div>
+            </div>
+        </div>
+        
+                
+          
+            </div>
+            </div>
+            </div>
+
+   
+
+{% endblock %}

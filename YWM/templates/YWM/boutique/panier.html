@@ -1,0 +1,143 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center" style="border-color: #c1c1c1;">
+                    <h1 class="section-heading">Le Panier</h1>
+                    <hr class="primary">
+                    
+                   
+                    
+                    <div class="container">
+                        <div class="row ">
+                    
+                            {% if messages != False %}
+                            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                                <div class="alert alert-dismissable alert-success">
+                                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">×</button>
+                                    {{messages}}</div>
+                            </div>
+                            {% endif %} 
+                            
+                            
+                            
+                            <div class="col-md-12">
+                                
+                                	
+                             
+                                    <div class="panel panel-info" style="border-color: #efefef;">
+                                        <div class="panel-heading"  style="background-color: #ffebec; color:black;">
+                                            <div class="panel-title" style="border-color: #efefef;">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <h5><span class="glyphicon glyphicon-shopping-cart"></span> Panier</h5>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <a href="/boutique/"> <button type="button" class="btn btn-primary btn-sm btn-block">
+                                                            <span class="glyphicon glyphicon-share-alt"></span> Continuer le shopping
+                                                        </button></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            
+                                            {% for produit, key in elements.items %}
+                                      
+                                            <div class="row">
+                                                <div class="col-md-3 col-xs-0 hidden-xs hidden-sm"><img class="img-responsive" style="max-height: 100px;" src="{{produit.photo1.url}}">
+                                                </div>
+                                                <div class="col-md-4 col-xs-4">
+                                                    <h4 class="product-name"><strong>{{produit.nom}}</strong></h4><h4><small>{{produit.infos}}</small></h4>
+                                                    {% if produit.stock == 0 %}
+                                                    <h4 style="color: red;"><strong>Le produit n'est plus en stock veuillez le supprimer de votre panier pour continuer.</strong></h4>
+                                                    {% endif %}
+                                                    {% if produit.stock < key %}
+                                                    <h4 style="color: red;"><strong>Le produit n'est pas disponnible dans cette quantité. Veuillez diminuer la quantité demmandée ou nous contacter, merci.</strong></h4>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-md-5 col-xs-8">
+
+                                                    <div class="col-xs-4 text-right">
+                                                    <h5><strong>Quantite : {{key}}</strong></h5>
+                                                    </div>
+
+                                                    <div class="col-xs-6 text-right">
+                                                        <h5><strong>{% widthratio produit.prix 1 key %}€ </strong>(P.U : {{produit.prix}}<span class="text-muted"></span>€)</h5>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-2">
+                                                        <a href="/boutique/supprimer/?ref={{produit.reference}}"><button type="button" class="btn btn-link btn-xs">
+                                                            <span class="glyphicon glyphicon-trash"> </span></a>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            {% endfor %}
+                                            
+                                           
+                                            <div class="row">
+
+                                                <div class=" col-md-12 text-center">
+                                                    
+                                                        <div class="col-xs-7">
+                                                            
+                                                        </div>
+                                                        <div class="col-xs-5">
+                                                            <form action="{% url "YWM.views.boutique_remise" %}" method="post" class="form-inline">
+                                                                {% csrf_token %}
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" name="code" id="code" placeholder="CODE PROMO">
+                                                                </div>
+                                                                <button type="test" class="btn btn-primary btn-xl">SOUMETTRE</button>
+                                                            </form>
+
+                                                        </div>
+
+                                                </div>
+
+                                            </div>
+                                            
+
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row text-center">
+                                                <div class="col-xs-9">
+                                                    <h4 class="text-right">Total <strong>{{total}}€</strong> ( <small>Remise de {{remise}}€ comprise</small> )</h4>
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <a href="/boutique/paiement/validation_commande" type="button" class="btn btn-primary btn-block" {% if test == False %} disabled="disabled" {% endif %}>
+                                                        Valider
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                           
+                        
+                            
+                      </div>
+                   </div>
+                   
+                </div>
+            </div>
+        </div>
+        
+                
+          
+            </div>
+            </div>
+            </div>
+
+   
+
+{% endblock %}

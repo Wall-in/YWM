@@ -1,0 +1,65 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <header>
+        <div class="container">
+            <div class="row ">
+                    
+                <h1>Ajouter une remise</h1>   
+            
+            </div>
+        </div>
+    </header>
+        
+     <div class="section">
+      <div class="container">
+        <div class="row"> 
+
+            {% if messages != False %}
+            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                <div class="alert alert-dismissable alert-success">
+                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">×</button>
+                    {{messages}}</div>
+            </div>
+            {% endif %} 
+            
+          <div style="padding-top : 15px; padding-bottom : 15px;">         
+          <div class="col-md-6">
+            <div class="jumbotron">
+              <h1>Ajouter une remise</h1>
+              <p>Aller!</p>
+            </div>
+          </div>
+          
+          
+          <div class="col-md-6" style="padding-bottom: 15px;">
+              
+           
+              <form action="{% url "YWM.views.admin_ajout_remise" %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                        <select class="selectpicker" multiple data-live-search="true" data-live-search-placeholder="Rechercher" data-width="90%" data-actions-box="true" data-deselect-all-text="Rien" data-select-all-text="Tous" data-size="5" title="Utilisateur(s)" name="users">
+                                    {% for utilisateur in utilisateurs %}
+                                        
+                                        <option value="{{utilisateur.email}}">{{utilisateur.email}}</option>
+                                        
+                                    {% endfor %}
+                            </select>
+
+                <input class="btn btn-primary btn-xl" type="submit" value="Ajouter" />
+                </form>
+                
+            
+          </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+{% endblock %}

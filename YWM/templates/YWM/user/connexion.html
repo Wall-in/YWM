@@ -1,0 +1,57 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+
+        <div class="container">
+            <div class="row ">
+                    
+                <h1 class="section-heading"> Connexion </h1>   
+                <hr class="primary">
+            
+            </div>
+        </div>
+
+        
+     <div class="section">
+      <div class="container">
+        <div class="row">
+            
+            {% if messages != False %}
+            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                <div class="alert alert-dismissable alert-success">
+                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">×</button>
+                    {{messages}}</div>
+            </div>
+            {% endif %} 
+                    
+                    
+          <div style="padding-top : 15px; padding-bottom : 15px;">         
+          <div class="col-md-6">
+            <div class="jumbotron">
+              <h1>Pas encore inscrit!?</h1>
+              <p>Inscrivez-vous dès maintenant!</p>
+              <a href="/inscription" class="btn btn-primary btn-xl">S'inscrire</a>
+            </div>
+          </div>
+          
+          
+          <div class="col-md-6">
+              
+           <form action="{% url "YWM.views.connexion" %}" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+            <input class="btn btn-primary btn-xl" type="submit" value="Se connecter" />
+            </form>
+            
+          </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+{% endblock %}

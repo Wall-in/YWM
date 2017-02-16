@@ -1,0 +1,145 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <header>
+        <div class="container">
+            <div class="row ">
+                    
+                <h1> Utilisateurs </h1>   
+            
+            </div>
+        </div>
+    </header>
+        
+    <body  id="tools">
+     <div class="section">
+      <div class="container">
+        <div class="row">
+          
+          {% if messages != False %}
+            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                <div class="alert alert-dismissable alert-success">
+                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">×</button>
+                    {{messages}}</div>
+            </div>
+            {% endif %} 
+          
+          <div class="col-md-12">
+           
+           <form action="{% url "YWM.views.admin_utilisateurs" %}" method="POST" class="form-inline" style="padding-top: 15px; padding-bottom: 15px;">
+            {% csrf_token %}
+            
+             
+            <div class="form-group">
+                <input class="form-control" id="username" name="username" placeholder="Numéro utilisateur">
+            </div>
+            
+            <button type="submit" class="btn btn-default">Rechercher</button> 
+            </form>
+           
+             <table class="table table-striped" id="matrix" cellpadding="0" cellspacing="0">
+                <thead> 
+                    <tr>
+                        
+                        <th>Adresse Mail</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Créé le</th>
+                        
+                    
+                    </tr>
+                </thead>
+                
+                <tbody>  
+                
+                        {% for utilisateur in utilisateurs %}
+                        
+                        <tr>
+                            
+                            <th>
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#{{utilisateur.id}}">
+                                {{utilisateur.username}}
+                                </button>
+                            </th>
+                            <th>{{utilisateur.last_name}}</th>
+                            <th>{{utilisateur.first_name}}</th>
+                            <th>{{utilisateur.date_joined}}</th>
+                            
+                        </tr>
+                        
+                        
+                        
+                        <div class="modal fade" id="{{utilisateur.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">{{utilisateur.username}}</h4>
+                            </div>
+                            <div class="modal-body">
+                               
+                               <div class="row">
+                                <div class="col-md-12"><h3>Coordonnées :</h3></div>
+                                <div class="col-md-6">
+                                        
+                                        <h4>Personnelles :</h4>
+                                        <p>Prénom : {{utilisateur.first_name}} </br>
+                                            Nom : {{utilisateur.last_name}} </br>
+                                            E-mail : {{utilisateur.username}} </br>
+                                            </p>
+                                            
+                                    </div>
+                                    <div class="col-md-6">
+                                        
+                                        <h4>Adresse :</h4>
+                                        <p>Voie : {{utilisateur.voie_livraison}} </br>
+                                        Code Postal : {{utilisateur.code_postal_livraison}} </br>
+                                        Ville : {{utilisateur.lieu_livraison}} </br>
+                                        Pays : {{utilisateur.pays_livraison}} </br>
+                                        </p>
+                                        
+                                    </div>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="row">
+                                <div class="col-md-12"><h3>Commandes:</h3></div>
+                                    
+                                        <div class="col-md-12"> 
+                                        
+                                        <h4>Référence commandes associées : </h4>
+                                    <p>    {% for commande in utilisateur.relationutilisateur.all %}
+                                            Commande n°<strong>{{commande.numero}}</strong> le <strong>{{commande.date|date:"d M Y"}}</strong> pour <strong>{{commande.total}}</strong> €. Etat : <strong>{{commande.etat}}</strong></br>
+                                            {% endfor %}
+                                        
+                                      </p>
+                                        
+                                        </div>
+                                    
+                            </div>
+                               
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        {% endfor %}
+                
+                </tbody>
+            </table>
+            
+          </div>
+           
+        </div>
+      </div>
+    </div>
+</body>   
+
+{% endblock %}

@@ -1,0 +1,190 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-12 text-center"> 
+                <h1 class="section-heading"> Validation et paiement </h1>   
+                <hr class="primary">
+                </div>
+            </div>
+        </div>
+                    
+                    <div class="container">
+                        <div class="row ">
+                            
+                            <div class="col-md-12">
+                                
+                                	<p>Votre commande sera prise en charge dès votre paiement effectué, pour toute question n'hésitez pas à nous contacter.</p>
+                             
+                                    <div class="panel panel-info" style="border-color: #efefef;">
+                                        <div class="panel-heading"  style="background-color: #ffebec; color:black;">
+                                            <div class="panel-title" style="border-color: #efefef;">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                       <h4>Récapitulatif de la commande n°{{numero}}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            
+                                      
+                                            <div class="row">
+                                                {% for produit, key in elements.items %}
+                        
+                                            <div class="row">
+                                                <div class="col-md-3 col-xs-3 hidden-xs"><img class="img-responsive" style="max-height: 150px; padding-left : 10px;" src="{{produit.photo1.url}}">
+                                                </div>
+                                                <div class="col-md-6 col-xs-6">
+                                                    <h4 class="product-name" style="padding-left : 10px;"><strong>{{produit.nom}}</strong></h4><h4 style="padding-left : 10px;"><small>{{produit.infos}}</small></h4>
+                                                    {% if produit.stock == 0 %}
+                                                    <h4 style="color: red;"><strong>Le produit n'est plus en stock veuillez le supprimer de votre panier pour continuer.</strong></h4>
+                                                    {% endif %}
+                                                </div>
+                                                
+                                                <div class="col-md-3 col-xs-6">
+                                                        <div class="col-xs-5 text-right">
+                                                        <h5><strong>Quantite : {{key}}</strong></h5>
+                                                        </div>
+
+                                                        <div class="col-xs-7 text-right">
+                                                            <h5><strong>{% widthratio produit.prix 1 key %}€ </strong>(P.U : {{produit.prix}}<span class="text-muted"></span>€)</h5>
+                                                        </div>
+                                                    
+                                                    </div>
+                                                    
+                                                </div>
+                                                <hr>
+                                                {% endfor %}
+
+                                            </div>
+
+                                            <div class="row">
+                            
+                                                <div class="col-xs-12" style="padding-left: 8px;">
+                                                    <h4 class="text-right">Sous-Total <strong>{{total|add:remise}}€ </strong></h4>
+                                                </div>
+
+                                            </div>
+                                            
+                                           <div class="row">
+
+                                                <hr class="primary">
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6">
+                                                        <h3> Informations livraison : </h3>
+                                                        <div class="col-md-6">
+                                                                    
+                                                                    <h4>Informations personnelles :</h4>
+                                                                    <p>
+                                                                        <strong>Nom :</strong> {{client.last_name}} </br>
+                                                                        <strong>Prénom :</strong> {{client.first_name}} </br>
+                                                                        <strong>E-mail :</strong> {{client.username}} </br>
+                                                                        {% if utilisateur.professionnel == True %}
+                                                                        <strong>Entreprise :</strong> {{client.nom_entreprise}} </br>
+                                                                        <strong>Numéro SIRET :</strong> {{client.numero_siret}} </br>
+                                                                        {% endif %}
+                                                                    </p>
+                                                                        
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                
+                                                                <h4>Adresse de livraison :</h4>
+                                                                    <p>
+                                                                        <strong>Rue :</strong> {{client.voie_livraison}} </br>
+                                                                        <strong>Code Postal :</strong> {{client.code_postal_livraison}} </br>
+                                                                        <strong>Ville :</strong> {{client.lieu_livraison}} </br>
+                                                                        <strong>Pays :</strong> {{client.pays_livraison}} </br>
+                                                                    </p>
+                                                                    
+                                                            </div>
+                                                       
+                                                    </div>
+
+                                                <div class="col-md-6">
+                                                    <h4 class="text-right">Frais de livraison <strong>Compris</strong></h4>
+                                                </div>
+                                            
+                                            </div>
+
+                                            </div>
+
+                                        
+
+                                            
+
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row text-center">
+                                                <div class="col-xs-9">
+                                                    <h4 class="text-right">Total <strong>{{total}}€</strong> ( <small>Remise {{remise}}€</small> )</h4>
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    
+                                                    <form action="/charge" method="POST">
+                                                    {% csrf_token %}
+                                            
+                                                    <input class="btn btn-primary btn-block"
+                                                        type="submit" 
+                                                        value="Payer"
+                                                        data-key="pk_test_rdRE1chkyNMBFDWzDNGjgotR"
+                                                        data-amount="{{total_affichage}}"
+                                                        data-email="{{utilisateur.username}}"
+                                                        data-description="Commande n°{{numero}}"
+
+                                                        data-image="{% static 'img/M-Logo.png' %}"
+                                                        data-shipping-address = "false"
+                                                        data-locale="auto"
+                                                        data-zip-code="false"
+                                                        data-allow-remember-me="false"
+                                                        data-currency="eur"
+                                                    />
+
+                                                    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
+                                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+                                                    <script>
+                                                    $(document).ready(function() {
+                                                        $(':submit').on('click', function(event) {
+                                                            event.preventDefault();
+                                                            var $button = $(this),
+                                                                $form = $button.parents('form');
+                                                            var opts = $.extend({}, $button.data(), {
+                                                                token: function(result) {
+                                                                    $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
+                                                                }
+                                                            });
+                                                            StripeCheckout.open(opts);
+                                                        });
+                                                    });
+                                                    </script>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                           
+                        
+                            
+                      </div>
+                   </div>
+                   
+                </div>
+            </div>
+        </div>
+        
+                
+          
+            </div>
+            </div>
+            </div>
+
+
+{% endblock %}
