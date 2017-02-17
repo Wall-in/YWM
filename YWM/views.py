@@ -71,7 +71,6 @@ def home (request):
     attribues = Attribue.objects.all()
     produits = Produit.objects.all()
     
-
         
     if request.method == 'POST': 
         categorie = request.POST.getlist('Categorie')

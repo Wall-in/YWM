@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^boutique/remise' , views.boutique_remise, name='Boutique Remise'),
     
     url(r'^admin/mdp', views.mdp, name='Acces MDP'),
-    url(r'^admin/accueil', views.admin_accueil, name='Accueil Admin'),
+    url(r'^admin/accueil$', views.admin_accueil, name='accueil_admin'),
     url(r'^admin/produits', views.admin_produits, name='Produits Admin'),
     url(r'^admin/ajoutproduit', views.admin_ajout_produit, name='Ajout Admin'),
     url(r'^admin/modificationproduit/(?P<ref>)$' , views.admin_modification_produit, name='Modification Produit Admin'),
