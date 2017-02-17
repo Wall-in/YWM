@@ -62,7 +62,7 @@ def import_image (request):
         form = Formulaire_Import_Image()
     return render(request, 'YWM/admin/import_image.html', locals()) 
 
-def home(request):
+def home (request):
     
     elements, total, nombre, remise = boutique_mon_panier_contenu(request)
     messages = message_alerte(request)
