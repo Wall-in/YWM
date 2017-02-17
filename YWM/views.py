@@ -160,7 +160,7 @@ def home (request):
                        
     return render(request, 'YWM/index.html', locals()) 
 
-def inscription(request):
+def inscription (request):
     
     lien_source = False
     messages = message_alerte(request)
@@ -206,7 +206,7 @@ def inscription(request):
 
     return render(request, 'YWM/user/inscription.html', locals())
 
-def inscription_professionnel(request):
+def inscription_professionnel (request):
     
     lien_source = False
     messages = message_alerte(request)
@@ -283,7 +283,7 @@ def inscription_email (request, utilisateur):
     return HttpResponse('inscription_email')
 
 
-def connexion(request):
+def connexion (request):
     
     error = False
     lien_source = False
@@ -324,7 +324,7 @@ def connexion(request):
     return render(request, 'YWM/user/connexion.html', locals())
 
 
-def deconnexion(request):
+def deconnexion (request):
     boutique_vider_panier(request)
     logout(request)
     
