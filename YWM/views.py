@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, render_to_response
 
-from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.template import RequestContext
 import stripe, random, code, string, re
@@ -330,7 +329,7 @@ def deconnexion(request):
     boutique_vider_panier(request)
     logout(request)
     
-    return redirect(reverse(connexion))
+    return redirect(connexion)
 
 
 def mdp (request):
@@ -1247,7 +1246,7 @@ def boutique_validation_commande(request):
     request.session['lien'] = "boutique/paiement/validation_commande"
 
     if request.user.id : 
-        return redirect(reverse(boutique_confirmation_adresse))
+        return redirect(boutique_confirmation_adresse)
     
     return render(request, 'YWM/boutique/paiement/validation_commande.html', locals())
 
