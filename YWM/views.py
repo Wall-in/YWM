@@ -562,10 +562,10 @@ def admin_ajout_produit (request):
             
             if test_produit :
                 request.session['messages'] = "Le produit à bien était ajouté!" 
-                return redirect(reverse(admin_accueil))
+                return redirect(admin_accueil)
             else : 
                 request.session['messages'] = "Le produit n'a pas était enregistré!" 
-                return redirect(reverse(admin_accueil))
+                return redirect(admin_accueil)
             
     
     else :
