@@ -36,7 +36,7 @@
                         
                         <div class="col-md-6 text-left">
                             
-                         <form method="post" action="{% url "YWM.views.boutique_confirmation_adresse" %}">
+                         <form method="post" action="/boutique/paiement/confirmation_adresse">
                             {% csrf_token %}
                             {{ form.as_p }}
                             <input class="btn btn-primary btn-lg btn-block " type="submit" value="Confirmer" />
