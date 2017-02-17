@@ -154,8 +154,6 @@ def home(request):
                 liste_tampon[l] = i
                 i = i +1
          
-       
-                
                 
         liste = liste_tampon
         

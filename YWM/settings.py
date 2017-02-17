@@ -31,6 +31,7 @@ ALLOWED_HOSTS = [
         ".pythonanywhere.com",
         "pythonanywhere.com",
         '.googleapis.com',
+        'wallin.pythonanywhere.com',
     ]
 
 
