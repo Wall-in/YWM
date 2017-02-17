@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-from django.conf.urls import include, url
+from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
-from . import views
+from . import views 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,7 +22,7 @@ urlpatterns = [
     url(r'^boutique/paiement/validation_commande$' , views.boutique_validation_commande, name='Boutique Validation Commande'),
     url(r'^boutique/paiement/confirmation_adresse' , views.boutique_confirmation_adresse, name='Boutique Validation Adresse'),
     url(r'^boutique/paiement/paiement/' , views.boutique_paiement_saisie, name='Boutique Paiement'),
-    url(r'^charge' , views.boutique_paiement, name='Boutique Paiement'),
+    url(r'^charge', views.boutique_paiement, name='Boutique Paiement'),
     url(r'^boutique/paiement/confirmation/' , views.boutique_paiement_confirmation, name='Boutique Paiement Confirmation'),
     url(r'^boutique/paiement/erreur/' , views.boutique_paiement_confirmation_erreur, name='Boutique Paiement Erreur'),
     url(r'^boutique/remise' , views.boutique_remise, name='Boutique Remise'),
