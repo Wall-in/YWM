@@ -47,11 +47,9 @@
                             <th>{{code.code}}</th>
                             <th>{% if code.pour_tous = True %}
                                 Pour tout le monde
-                                {% endif %}
-                                {% if code.pour_pro = True %}
+                                {% elif code.pour_pro = True %}
                                 Pour tout les pros
-                                {% endif %}
-                                {% if code.pour_tous = False and code.pour_pro = False %}
+                                {% else %}
                                 Pour des utilisateurs spécifiques
                                 {% endif %}</th>
 
