@@ -42,7 +42,7 @@
           
           <div class="col-md-6">
               
-           <form action="{% url "YWM.views.inscription" %}" method="post">
+           <form action="/inscription" method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
             <input class="btn btn-primary btn-xl" type="submit" value="S'inscrire" />
