@@ -7,9 +7,9 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.home, name='home'),
+    url(r'^', views.home, name='home'),
     
-    url(r'^inscription$', views.inscription, name='inscription'),
+    url(r'^inscription', views.inscription, name='inscription'),
     url(r'^inscription_professionnel', views.inscription_professionnel, name='Inscription pour les professionnels'),
     url(r'^connexion', views.connexion, name='connexion'),
     url(r'^deconnexion', views.deconnexion, name='deconnexion'),
