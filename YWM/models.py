@@ -71,6 +71,9 @@ class Produit(models.Model):
 
     nom = models.CharField(max_length=60)
     prix = models.FloatField(verbose_name="Prix unitaire en € comprenant les frais de livraison")
+    
+    cout_achat = models.FloatField(verbose_name="Coût d'achat en € pour l'analyse des coûts", default = 0)
+    cout_estimation_livraison = models.FloatField(verbose_name="Estimation coût de livraison en € pour l'analyse des coûts", default = 0)
         
     description = models.TextField(max_length=1000, blank=True)
     
@@ -109,7 +112,6 @@ class Commande(models.Model):
     total = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total en €")
     remise = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Remise en €")
     
-    
     voie_livraison = models.CharField(max_length=250, default='Renseignez votre adresse')
     code_postal_livraison = models.CharField(max_length=250, default='Renseignez votre code postal')
     lieu_livraison = models.CharField(max_length = 250, default='Renseignez votre ville')
@@ -131,5 +133,7 @@ class Produit_Cmd(models.Model):
     prix = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total en €")
     
     sous_total = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total en €")
+    total_prix_achat = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Total coût achat en €", default = 0)
+    total_estimation_livraison = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Estimation cout livraison en €", default = 0)
     
     

@@ -52,7 +52,7 @@
         <div class="container">
             <div class="row ">
                     
-                <h1 class="section-heading"> Admin Dashboard</h1>   
+                <h1 class="section-heading"> Admin Dashboard : {{total_estimation_livraison}}</h1>   
                 <hr class="primary">
 
                 
@@ -200,8 +200,33 @@
                                     
                       <script src="https://code.highcharts.com/highcharts.js"></script>
                     
-                        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; padding-bottom: 25px;"></div>
-                                           
+                        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; padding-bottom: 45px;"></div>
+
+
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Analyse du revenue
+                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                                    <h3 style="color : lawngreen">Revenue : <strong>{{total_commandes}} €</strong></h3>
+                                    <h3 style="color : darkred">Coût Stripe (1,4%) : <strong>{{total_stripe }}</strong></h3>
+                                    <h3 style="color : darkred">Marge MGBCORP (6%) : <strong>{{total_max }}</strong></h3>
+                                    <h3 style="color : darkred">Coût d'achat : <strong>{{total_prix_achat}}</strong></h3>
+                                    <h3 style="color : darkred">Estimation coût livraison : <strong>{{total_estimation_livraison}}</strong></h3>
+                                    <h3 style="color : darkred">Remise : <strong>{{total_remise}}</strong></h3>
+                                    <h2 style="color : lawngreen">Bénéfice net : <strong>{{benefice}} €</strong></h2>            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+           
+                </div>
+                <!-- /.col-lg-12 -->
+
+
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -302,6 +327,7 @@
                     <!-- /.panel -->
                     
             </div>
+            
         </div>
       </div>
     </div>

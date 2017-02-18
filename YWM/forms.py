@@ -67,10 +67,12 @@ class Formulaire_Remise (forms.ModelForm):
 class Formulaire_Ajout_Produit (forms.ModelForm):
         class Meta:
             model = Produit
-            fields = ['nom', 'prix', 'description', 'infos', 'categorie' , 'couleurs', 'attribues', 'hauteur', 'largeur', 'profondeur', 'volume' , 'poids', 'photo1', 'photo2', 'photo3', 'stock', 'conditionnement']
+            fields = ['nom', 'prix', 'cout_achat', 'cout_estimation_livraison', 'description', 'infos', 'categorie' , 'couleurs', 'attribues', 'hauteur', 'largeur', 'profondeur', 'volume' , 'poids', 'photo1', 'photo2', 'photo3', 'stock', 'conditionnement']
             widgets = {
             'nom' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Nom'}),
             'prix' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Prix'}),
+            'cout_achat' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Coût achat du produit fournisseur'}),
+            'cout_estimation_livraison' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Estimation Livraison'}),
             'description' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Description'}),
             
             'infos' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Infos'}),
@@ -103,10 +105,15 @@ class Formulaire_Modification_Produit(forms.ModelForm):
     
     class Meta:
             model = Produit
-            fields = [ 'nom', 'prix', 'description', 'infos', 'hauteur', 'largeur', 'profondeur', 'volume' , 'poids', 'photo1', 'photo2', 'photo3', 'stock',  'conditionnement', ]
+            fields = [ 'nom', 'prix', 'cout_achat', 'cout_estimation_livraison', 'description', 'infos', 'hauteur', 'largeur', 'profondeur', 'volume' , 'poids', 'photo1', 'photo2', 'photo3', 'stock',  'conditionnement', ]
             widgets = {
             'nom' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Nom'}),
+            
             'prix' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Prix'}),
+            'cout_achat' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Coût achat du produit fournisseur'}),
+            'cout_estimation_livraison' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Estimation Livraison'}),
+            
+            'description' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Description'}),
             'description' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Description'}),
             
             'infos' : forms.TextInput (attrs={'class': 'form-control', 'placeholder': 'Infos'}),

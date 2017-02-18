@@ -1,0 +1,56 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <header>
+        <div class="container">
+            <div class="row ">
+                    
+                <h1> Accueil Admin </h1>   
+            
+            </div>
+        </div>
+    </header>
+        
+     <div class="section">
+      <div class="container">
+        <div class="row">
+          
+          {% if messages != False %}
+            <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                <div class="alert alert-dismissable alert-success">
+                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                aria-hidden="true">×</button>
+                    {{messages}}</div>
+            </div>
+            {% endif %} 
+          
+          <div class="col-md-12">
+
+            <div class="col-md-6">
+              <h2>{{produit.nom}} <small>(référence : {{produit.reference}})</small></h2>
+                <h3>Prix Unitaire : {{produit.prix}} €</h3>
+                <h3>Frais de livraison : compris dans le prix</h3>
+                <h3>Description : </h3><p>{{produit.description}}</p>  
+                <h3>Info : </h3><p>{{produit.infos}}</p>
+            </div>
+
+            <div class="col-md-6">
+                <h2>Analyse des coûts</h2>
+                <h3 style="color : lawngreen">Revenue : <strong>{{produit.prix}} €</strong></h3>
+                <h3 style="color : darkred">Coût Stripe (1,4%) : <strong>{% widthratio produit.prix 1000 14 %}</strong></h3>
+                <h3 style="color : darkred">Coût Max (6%) : <strong>{% widthratio produit.prix 100 6  %}</strong></h3>
+                <h3 style="color : darkred">Coût d'achat : <strong>{{produit.cout_achat}}</strong></h3>
+                <h3 style="color : darkred">Estimation coût livraison : <strong>{{produit.cout_estimation_livraison}}</strong></h3>
+                <h2 style="color : lawngreen">Bénéfice net : <strong>{{benefice}} €</strong></h2>   
+            </div>
+
+          </div>
+           
+        </div>
+      </div>
+    </div>
+    
+
+{% endblock %}

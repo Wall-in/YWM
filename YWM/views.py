@@ -3,34 +3,28 @@ from django.contrib.auth.models import User, UserManager,AnonymousUser
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, render_to_response
-
 from django.http import HttpResponse
 from django.template import RequestContext
 import stripe, random, code, string, re
-
 from django.contrib.redirects.models import Redirect
 from locale import currency
 from datetime import *
 from django.db.transaction import commit
-
 from YWM.models import *
 from YWM.forms import *
-
 from stripe.resource import Customer
 from _ast import IsNot
 from django.db.models.fields import Empty
-
 from django.template import Context
 from django.template.loader import render_to_string, get_template
 from django.core.mail import EmailMessage
 from email.mime.image import MIMEImage
-
 import json, os
 from django.core.files import File
 from calendar import month
 from decimal import Decimal
 
-stripe.api_key = "sk_test_PIF9aNPnjijSvto3uKp6YfW6"
+stripe.api_key = "sk_test_9YVzjlgZO0Lik6ipHhRMIb30"
 
 def message_alerte (request):
     
@@ -260,9 +254,9 @@ def inscription_professionnel (request):
 
 def inscription_email (request, utilisateur):
     
-    subject = "Mody | mobilier design - Confirmation d'inscription"
+    subject = "YesWeMeuble - Confirmation d'inscription"
     to = [utilisateur.email]
-    from_email = 'noreply@mody.com'
+    from_email = 'noreply@yeswemeuble.com'
 
     image = Image.objects.get(name='logo')
     
@@ -416,20 +410,34 @@ def admin_accueil (request):
     graphique = []
     taille = len(duree_graphique)
     i = 0
-    total_commandes = 0
+    total_commandes = Decimal(0.00)
+    total_prix_achat = Decimal(0.00)
+    total_estimation_livraison = Decimal(0.00)
+    total_stripe = Decimal(0.00)
+    total_max = Decimal(0.00)
+    total_remise = Decimal(0.00)
+    
     
     while i < duree :
         date = duree_graphique[i]
         intermediaire = 0
         for commande in commandes:
-            total_commandes = total_commandes + commande.total
             test = commande.date.strftime('%Y/%m/%d')
             test_liste.insert(0,test)
+            
             if test == date :
                 intermediaire = int(commande.total + intermediaire)
+                total_commandes = total_commandes + commande.total
+                total_stripe = total_stripe + commande.total * Decimal(0.014)
+                total_max = total_max + Decimal(commande.total) * Decimal(0.06)
+                total_remise = total_remise + commande.remise
+                for couple in commande.relationcommande.all() :
+                    total_estimation_livraison = total_estimation_livraison + couple.total_estimation_livraison
+                    total_prix_achat = total_prix_achat + couple.total_prix_achat
         graphique.append(intermediaire) 
         i += 1   
-
+    
+    benefice = round(total_commandes - total_prix_achat - total_estimation_livraison - total_stripe - total_max - total_remise)
     return render(request, 'YWM/admin/accueil.html', locals())
 
 def admin_produits (request):
@@ -444,6 +452,22 @@ def admin_produits (request):
     produits = Produit.objects.all()
 
     return render (request, 'YWM/admin/produits.html', locals())
+
+def admin_produit_analyse (request, ref):
+    
+    messages = message_alerte(request)
+    elements, total, nombre, remise = boutique_mon_panier_contenu(request)
+    
+    ref = request.GET['ref']
+    
+    if acces_admin(request) == False :
+        return redirect(mdp)
+    
+    produit = Produit.objects.get(reference = ref)
+    
+    benefice = produit.prix - (produit.prix * 0.014) - (produit.cout_achat) - (produit.cout_estimation_livraison) - (produit.prix * 0.06)
+    
+    return render (request, 'YWM/admin/analyse_produit.html', locals())
 
 def admin_ajout_categorie(request):
     
@@ -502,7 +526,11 @@ def admin_ajout_produit (request):
         if form.is_valid(): 
             
             nom = form.cleaned_data['nom']
+            
             prix = form.cleaned_data['prix']
+            cout_achat = form.cleaned_data['cout_achat']
+            cout_estimation_livraison = form.cleaned_data['cout_estimation_livraison']
+            
             description = form.cleaned_data['description']
             
             infos = form.cleaned_data['infos']
@@ -534,7 +562,7 @@ def admin_ajout_produit (request):
                 
             reference = "ref"+ref
             
-            produit = Produit(nom=nom, prix=prix, description=description, \
+            produit = Produit(nom=nom, prix=prix, cout_achat = cout_achat, cout_estimation_livraison = cout_estimation_livraison, description=description, \
                               infos=infos, hauteur=hauteur, largeur=largeur, profondeur=profondeur, volume=volume, poids=poids, photo1=photo1, \
                               photo2=photo2, photo3=photo3, stock=stock, conditionnement=conditionnement, \
                               reference= reference)
@@ -548,7 +576,7 @@ def admin_ajout_produit (request):
                 produit.couleurs.add(couleur)   
             
             for attribue in attribues:
-                produit.attribues.add(couleur) 
+                produit.attribues.add(attribue) 
                 
             
             try :
@@ -576,6 +604,9 @@ def admin_ajout_remise (request):
     elements, total, nombre, remise = boutique_mon_panier_contenu(request)
     messages = message_alerte(request)
     
+    if acces_admin(request) == False :
+        return redirect(mdp)
+    
     utilisateurs = Utilisateur.objects.all()
     
     if request.method == 'POST': 
@@ -595,11 +626,14 @@ def admin_ajout_remise (request):
             remise = Remise(code = code, quantite = quantite, valeur = valeur, pourcentage = pourcentage, pour_pro = pour_pro, pour_tous = pour_tous)
            
             remise.save()
-            request.session['messages'] = "La réduction a été enregistrée!" 
+            
             
             for user in users:
                 useradd =Utilisateur.objects.get(username = user)
                 remise.utilisateurs.add(useradd) 
+            
+            request.session['messages'] = "La réduction a été enregistrée!" 
+            return redirect(admin_accueil)
            
     else :
         form = Formulaire_Remise()
@@ -653,7 +687,7 @@ def admin_modification_produit(request, ref):
            
         produit = Produit.objects.get(reference=ref)
         
-        initiale = {'nom' : produit.nom, 'prix' : produit.prix, 'description' : produit.description, 'infos' : produit.infos, \
+        initiale = {'nom' : produit.nom, 'prix' : produit.prix, 'cout_achat' : produit.cout_achat, 'cout_estimation_livraison' : produit.cout_estimation_livraison,  'description' : produit.description, 'infos' : produit.infos, \
                     'hauteur' : produit.hauteur, 'largeur' : produit.largeur, 'profondeur' : produit.profondeur, 'volume': produit.volume, \
                     'poids' : produit.poids, 'stock' : produit.stock, 'conditionnement' : produit.conditionnement, 'photo1' : produit.photo1, \
                     'photo2' : produit.photo2, 'photo3' : produit.photo3, }
@@ -667,7 +701,11 @@ def admin_modification_produit(request, ref):
             attribue = request.POST.getlist('Attribue')
             
             produit.nom = form.cleaned_data['nom']
+            
             produit.prix = form.cleaned_data['prix']
+            produit.cout_achat = form.cleaned_data['cout_achat']
+            produit.cout_estimation_livraison = form.cleaned_data['cout_estimation_livraison']
+            
             produit.description = form.cleaned_data['description']
             produit.infos = form.cleaned_data['infos']
             produit.hauteur = form.cleaned_data['hauteur']
@@ -689,7 +727,7 @@ def admin_modification_produit(request, ref):
             produit.attribues.clear()
             
             for c in categorie:
-                cat = Categorie.objects.get(nom= c)
+                cat = Categorie.objects.get(nom = c)
                 produit.categorie.add(cat)
             
             for c in couleur:
@@ -697,10 +735,10 @@ def admin_modification_produit(request, ref):
                 produit.couleurs.add(cl)   
             
             for a in attribue:
-                at = Attribue.objects.get(nom=a)
+                at = Attribue.objects.get(nom = a)
                 produit.attribues.add(at) 
                 
-            return redirect(admin_produits )
+            return redirect(admin_produits)
           
     else :
          
@@ -708,7 +746,7 @@ def admin_modification_produit(request, ref):
         produit = Produit
         produit = Produit.objects.get(reference = ref)
         
-        initiale = {'nom' : produit.nom, 'prix' : produit.prix, 'description' : produit.description, 'couleur' : produit.couleurs, 'infos' : produit.infos, \
+        initiale = {'nom' : produit.nom, 'prix' : produit.prix, 'cout_achat' : produit.cout_achat, 'cout_estimation_livraison' : produit.cout_estimation_livraison, 'description' : produit.description, 'couleur' : produit.couleurs, 'infos' : produit.infos, \
                     'hauteur' : produit.hauteur, 'largeur' : produit.largeur, 'profondeur' : produit.profondeur, 'volume': produit.volume, \
                     'poids' : produit.poids, 'stock' : produit.stock, 'conditionnement' : produit.conditionnement, 'photo1' : produit.photo1, \
                     'photo2' : produit.photo2, 'photo3' : produit.photo3 }
@@ -1302,13 +1340,19 @@ def boutique_enregistrement_commande(request, numero):
                         numero = numero, etat = "Non Traitée", date = date_commande)
     commande.save()   
     
+    total_prix_achat = 0
+    total_estimation_livraison = 0
     
     for produit in elements :
         
         quantite = elements[produit]
         sous_total = produit.prix * int(quantite)
+        total_prix_achat = total_prix_achat + produit.cout_achat
+        total_estimation_livraison = total_estimation_livraison + produit.cout_estimation_livraison
         
-        produit_cmd = Produit_Cmd(commande = commande, produit = produit, quantite = quantite, prix = produit.prix, sous_total = sous_total)
+        
+        produit_cmd = Produit_Cmd(commande = commande, produit = produit, quantite = quantite, prix = produit.prix, sous_total = sous_total,\
+                                   total_prix_achat = total_prix_achat, total_estimation_livraison = total_estimation_livraison)
 
         produit_cmd.save()
         
@@ -1339,9 +1383,9 @@ def boutique_mise_a_jour_stock (request):
 
 def boutique_envoie_mail_client (request, numero, commande, utilisateur):
     
-    subject = "Mody | mobilier design - Confirmation commande n°" + numero
+    subject = "YesWeMeuble - Confirmation commande n°" + numero
     to = [utilisateur.email]
-    from_email = 'noreply@mody.com'
+    from_email = 'noreply@yeswemeuble.com'
 
     image = Image.objects.get(name='logo')
     
@@ -1364,9 +1408,9 @@ def boutique_envoie_mail_client (request, numero, commande, utilisateur):
 
 def boutique_envoie_mail_admin (request, numero, commande, utilisateur):
     
-    subject = "Mody | mobilier design - Confirmation commande n°" + numero
+    subject = "YesWeMeuble - Confirmation commande n°" + numero
     to = ['maximiliengdeb@gmail.com']
-    from_email = 'noreply@mody.com'
+    from_email = 'noreply@yeswemeuble.com'
 
     image = Image.objects.get(name='logo')
     
@@ -1445,7 +1489,7 @@ def boutique_paiement(request):
             customer = stripe.Customer.create(
             source=token,
             id = utilisateur.username,
-            email = utilisateur.email,  
+            email = utilisateur.username,  
             )
             
             stripe.Charge.create(

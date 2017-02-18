@@ -136,8 +136,8 @@ MEDIA_URL = '/media/'
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'C:/Users/Maximilien/Desktop\YWM/YWM/media/')
 #MEDIA_URL = '/media/'
 
-STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_test_4N8ypZpOIkUJwxM63oiPpCeF")
-STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_PIF9aNPnjijSvto3uKp6YfW6")
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_test_rdRE1chkyNMBFDWzDNGjgotR")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_9YVzjlgZO0Lik6ipHhRMIb30")
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'yeswemeuble@wall-in.com'

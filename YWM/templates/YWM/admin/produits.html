@@ -33,7 +33,7 @@
                         <tr>
                             <th>Reference</th>
                             <th>Nom</th>
-                            <th>Prix</th>
+                            <th>Prix/Analyse</th>
                             <th>Stock</th>
                             <th>Modifier</th>
                             
@@ -44,9 +44,9 @@
                         <tr>
                             <th>{{produit.reference}}</th>
                             <th>{{produit.nom}}</th>
-                            <th>{{produit.prix}} €</th>
+                            <th><a href="/admin/analyse_produit/?ref={{produit.reference}}">{{produit.prix}} €</a> </th>
                             <th>{{produit.stock}}</th>
-                            <th><a href="modificationproduit/?ref={{produit.reference}}">Modidier</a></th>
+                            <th><a href="/admin/modificationproduit/?ref={{produit.reference}}">Modidier</a></th>
                             
                         </tr>
                         {% endfor %}

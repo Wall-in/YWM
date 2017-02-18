@@ -5,7 +5,7 @@ from django.conf import settings
 from . import views 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^supperadmin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
     
     url(r'^inscription', views.inscription, name='inscription'),
@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^boutique/remise' , views.boutique_remise, name='Boutique Remise'),
     
     url(r'^admin/mdp', views.mdp, name='mdp'),
-    url(r'^admin/accueil', views.admin_accueil, name='admin_accueil'),
+    url(r'^admin/$', views.admin_accueil, name='admin_accueil'),
     url(r'^admin/produits', views.admin_produits, name='Produits Admin'),
     url(r'^admin/ajoutproduit', views.admin_ajout_produit, name='Ajout Admin'),
     url(r'^admin/modificationproduit/(?P<ref>)$' , views.admin_modification_produit, name='Modification Produit Admin'),
@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^admin/ajout_attribue' , views.admin_ajout_attribue, name='Import Attribue'),
     url(r'^admin/remises' , views.admin_remises, name='Remises'),
     url(r'^admin/remise_supprimer/(?P<ref>)$' , views.admin_supprimer_remise, name='Remises'),
+    url(r'^admin/analyse_produit/(?P<ref>)$' , views.admin_produit_analyse, name='Analyse Produit'),
     
     url(r'^user/compte/commandes' , views.user_commandes, name='User Commandes'),
     url(r'^user/compte/dashboard' , views.user_compte_dashboard, name='User Dashboard'),
