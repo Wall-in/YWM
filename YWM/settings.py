@@ -129,12 +129,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = "/home/Wallin/YWM/static"
 
-#MEDIA_ROOT = "/home/Wallin/YWM/media"
+MEDIA_ROOT = "/home/Wallin/YWM/media"
 MEDIA_URL = '/media/'
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'C:/Users/Maximilien/Desktop\YWM/YWM/media/')
-#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'C:/Users/Maximilien/Desktop\YWM/YWM/media/')
+
 
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "pk_test_rdRE1chkyNMBFDWzDNGjgotR")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_9YVzjlgZO0Lik6ipHhRMIb30")
