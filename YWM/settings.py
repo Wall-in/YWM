@@ -144,5 +144,3 @@ EMAIL_HOST_USER = 'yeswemeuble@wall-in.com'
 EMAIL_HOST_PASSWORD = 'yeswemeuble9'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
-SECURE_SSL_REDIRECT = True
