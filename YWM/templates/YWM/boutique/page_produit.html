@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h1 class="section-heading">{{produit.nom}}</h1>
+                    <h1 class="section-heading">{{produit.nom}} </h1>
                     <hr class="primary">
                     
                    
@@ -68,22 +68,54 @@
 
 
                                 <h2>Prix Unitaire : {{produit.prix}} €</h2><p style="position : relative"></p>
+
+                                
+
                                 <h3>Frais de livraison : compris dans le prix</h3>
                                 <h3>Description : </h3><p>{{produit.description}}</p>  
                                 <h3>Info : </h3><p>{{produit.infos}}</p>
                      
                                 
-
                                 <form class="form-inline" action="/boutique/ajout/?ref={{produit.reference}}" method="POST">
-                                 {% csrf_token %}
-                                <div class="form-group">
-                                    <input class="form-control" id="exampleInputAmount" name="quantite" placeholder="Quantité">
+                                    {% csrf_token %}
+                                    <div class="form-group" style="position : relative; float: left; padding-right : 8px;"> 
+                                        <input class="form-control" id="exampleInputAmount" name="quantite" placeholder="Qte" style="width : 50px;" >
+                                    </div>
+                                
+                                    <button type="submit" class="btn btn-primary" style="position : relative; float: left;  padding-right : 8px;">Ajouter au Panier</button>
+                                    
+                                    
+                                <div style="position : relative; float: left;  padding-left : 8px;" >
+                                {% if user != None %}
+                                <a href="/user/ajoutfavori/?ref={{produit.reference}}" type="submit" class="btn btn-primary">❤</a>
+                                {% else %}
+                                
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">❤</button>
+
+                                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                <div class="modal-dialog modal-sm" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Ajouter aux favoris</h4>
+                                        </div>
+                                    <div style="padding: 15px;">
+                                   <h4> Pour ajouter aux favoris veuillez vous <a href="/connexion">connecter</a> ou vous <a href="/inscription" >inscrire</a>.</br>
+                                    Bonne continuation. </h4>
+                                    </div>
+                                    </div>
+                                </div>
                                 </div>
                                
-                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                                {% endif %}
+                                </div>
                                 </form>
-                                
+
+                               
                             </div>      
+
+                            
+                            
                             
                             <div class="col-md-12">
                               

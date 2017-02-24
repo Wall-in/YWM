@@ -40,7 +40,7 @@
                 <h2>Analyse des coûts</h2>
                 <h3 style="color : lawngreen">Revenue : <strong>{{produit.prix}} €</strong></h3>
                 <h3 style="color : darkred">Coût Stripe (1,4%) : <strong>{% widthratio produit.prix 1000 14 %}</strong></h3>
-                <h3 style="color : darkred">Coût Max (6%) : <strong>{% widthratio produit.prix 100 6  %}</strong></h3>
+                <h3 style="color : darkred">Coût Max (10%) : <strong>{% widthratio produit.prix 100 6  %}</strong></h3>
                 <h3 style="color : darkred">Coût d'achat : <strong>{{produit.cout_achat}}</strong></h3>
                 <h3 style="color : darkred">Estimation coût livraison : <strong>{{produit.cout_estimation_livraison}}</strong></h3>
                 <h2 style="color : lawngreen">Bénéfice net : <strong>{{benefice}} €</strong></h2>   

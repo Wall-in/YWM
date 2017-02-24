@@ -408,6 +408,7 @@ def admin_accueil (request):
 
     test_liste = []
     graphique = []
+    graphique2 = []
     taille = len(duree_graphique)
     i = 0
     total_commandes = Decimal(0.00)
@@ -420,21 +421,24 @@ def admin_accueil (request):
     
     while i < duree :
         date = duree_graphique[i]
-        intermediaire = 0
+        intermediaire_CA = 0
+        intermediaire_BENEFICE = 0
         for commande in commandes:
             test = commande.date.strftime('%Y/%m/%d')
             test_liste.insert(0,test)
             
             if test == date :
-                intermediaire = int(commande.total + intermediaire)
+                intermediaire_CA = int(commande.total + intermediaire_CA)
                 total_commandes = total_commandes + commande.total
-                total_stripe = total_stripe + commande.total * Decimal(0.014)
-                total_max = total_max + Decimal(commande.total) * Decimal(0.06)
-                total_remise = total_remise + commande.remise
+                total_stripe = round(total_stripe + commande.total * Decimal(0.014),2)
+                total_max = round(total_max + Decimal(commande.total) * Decimal(0.1),2)
+                total_remise = round(total_remise + commande.remise,2)
                 for couple in commande.relationcommande.all() :
                     total_estimation_livraison = total_estimation_livraison + couple.total_estimation_livraison
                     total_prix_achat = total_prix_achat + couple.total_prix_achat
-        graphique.append(intermediaire) 
+                intermediaire_BENEFICE = round(commande.total - total_prix_achat - total_estimation_livraison - total_stripe - total_max - total_remise)
+        graphique2.append(intermediaire_BENEFICE) 
+        graphique.append(intermediaire_CA) 
         i += 1   
     
     benefice = round(total_commandes - total_prix_achat - total_estimation_livraison - total_stripe - total_max - total_remise)
@@ -465,7 +469,7 @@ def admin_produit_analyse (request, ref):
     
     produit = Produit.objects.get(reference = ref)
     
-    benefice = produit.prix - (produit.prix * 0.014) - (produit.cout_achat) - (produit.cout_estimation_livraison) - (produit.prix * 0.06)
+    benefice = produit.prix - (produit.prix * 0.014) - (produit.cout_achat) - (produit.cout_estimation_livraison) - (produit.prix * 0.10)
     
     return render (request, 'YWM/admin/analyse_produit.html', locals())
 
@@ -931,6 +935,48 @@ def user_changement_adresse (request):
   
     return render(request, 'YWM/user/compte/changement_adresse.html', locals())
 
+
+@login_required(login_url='connexion')
+def user_favori (request):
+    
+    messages = message_alerte(request)
+    elements, total, nombre, remise = boutique_mon_panier_contenu(request)
+    
+    identifiant_utilisateur = request.user.id
+    client = Utilisateur.objects.get(id=identifiant_utilisateur)
+    
+    longueur = len(client.produit_favori.all())
+    
+    return render(request, 'YWM/user/compte/favori.html', locals())
+
+@login_required(login_url='connexion')
+def user_ajout_favori (request, ref):
+    
+    identifiant_utilisateur = request.user.id
+    client = Utilisateur.objects.get(id=identifiant_utilisateur)
+    ref = request.GET['ref']
+    
+    produit = Produit.objects.get(reference = ref)
+    produits_favoris = client.produit_favori.all()
+    
+    if produit.stock > 0 and produit not in produits_favoris :
+        client.produit_favori.add(produit)
+    
+    return redirect(user_favori)
+
+@login_required(login_url='connexion')
+def user_supprimer_favori (request, ref):
+    
+    identifiant_utilisateur = request.user.id
+    client = Utilisateur.objects.get(id=identifiant_utilisateur)
+    ref = request.GET['ref']
+    
+    produit = Produit.objects.get(reference = ref)
+
+    client.produit_favori.remove(produit)
+    
+    return redirect(user_favori)
+
 def boutique_mon_panier_contenu (request):
     
     try :
@@ -1088,11 +1134,14 @@ def boutique_ajout_produit(request, ref):
     
     if request.method == 'POST': 
         
-        quantite = request.POST['quantite'] 
+        quantite = request.POST['quantite']
+        if quantite == '' :
+            quantite = 1 
     
         try:
             mon_panier = request.session['mon_panier']
             mes_quantites = request.session['mes_quantites']
+            
              
             if ref in mon_panier:
                 position = mon_panier.index(ref)

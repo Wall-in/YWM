@@ -5,7 +5,7 @@ from django.conf import settings
 from . import views 
 
 urlpatterns = [
-    url(r'^supperadmin/', admin.site.urls),
+    url(r'^superadmin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
     
     url(r'^inscription', views.inscription, name='inscription'),
@@ -49,5 +49,8 @@ urlpatterns = [
     url(r'^user/compte/dashboard' , views.user_compte_dashboard, name='User Dashboard'),
     url(r'^user/compte/changement_mdp' , views.user_changement_mdp, name='User Changement MDP'),
     url(r'^user/compte/changement_adresse' , views.user_changement_adresse, name='User Changement Adresse'),
+    url(r'^user/ajoutfavori/(?P<ref>)$' , views.user_ajout_favori, name='User Ajout Favori'),
+    url(r'^user/supprimerfavori/(?P<ref>)$' , views.user_supprimer_favori, name='User Ajout Favori'),
+    url(r'^user/compte/favoris$' , views.user_favori, name='User Favoris'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

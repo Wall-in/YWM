@@ -1,0 +1,75 @@
+
+{% extends "YWM/base.html" %}
+{% block content %}
+{% load staticfiles %}
+
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="section-heading">Vos Favoris </h1>
+                    <hr class="primary">
+                    
+                   
+                    
+                    <div class="container">
+                        <div class="row ">
+                    
+                    {% if messages != False %}
+                    <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                        <div class="alert alert-dismissable alert-success">
+                        <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">×</button>
+                            {{messages}}</div>
+                    </div>
+                    {% endif %} 
+                    
+                    
+                    <div class="col-md-12">
+                       {% if longueur < 1 %}
+
+                       <h3 style="padding-bottom: 15px;">Vous n'avez pas de favori :(.</h3>
+
+                       {% else %} 
+                        {% for produit in client.produit_favori.all %}
+                             
+                        <div class="col-md-4">
+                            
+                         <div class="product-item">
+                            <div class="pi-img-wrapper">
+                                <img src="{{produit.photo1.url}}" class="img-responsive" alt="{{produit.nom}}">
+                                <div>
+                                <a href="/boutique/page_produit/?ref={{produit.reference}}" class="btn">Plus de détails</a>
+                                <a href="/user/supprimerfavori/?ref={{produit.reference}}" class="btn">Supprimer des favoris</a>
+                                </div>
+                            </div>
+                            <h3><a href="/boutique/page_produit/?ref={{produit.reference}}">{{produit.nom}}</a></h3>
+                            <div class="pi-price">{{produit.prix}}€</div>
+                            {% if produit.stock > 0 %}
+                            <a href="/boutique/ajout/?ref={{produit.reference}}" class="btn add2cart">Ajouter au panier</a>
+                            {% else %}
+                            <a class="btn add2cart">Plus disponnible, contactez nous</a>
+                            {%endif%}
+                            </div>
+                        </div>
+                          
+                        {% endfor %}
+                     {%endif%}   
+                    </div>      
+                            
+                      </div>
+                   </div>
+                   
+                </div>
+            </div>
+        </div>
+        
+                
+          
+            </div>
+            </div>
+            </div>
+
+   
+
+{% endblock %}

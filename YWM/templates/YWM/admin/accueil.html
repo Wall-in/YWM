@@ -38,12 +38,17 @@
                         borderWidth: 0
                     },
                     series: [{
-                        name: 'Vente',
-                        data: {{graphique}},
-                        
-                        pointStart: Date.UTC({{date_avant|date:"Y"}}, {{duree_axe_x_m}}, {{duree_axe_x_d}}),
-                        pointInterval: 24 * 3600 * 1000 
-                    }]
+                                name: 'CA',
+                                data: {{graphique}},
+                                pointStart: Date.UTC({{date_avant|date:"Y"}}, {{duree_axe_x_m}}, {{duree_axe_x_d}}),
+                                pointInterval: 24 * 3600 * 1000 
+                            }, {
+                                name: 'Bénéfice',
+                                data: {{graphique2}},
+                                pointStart: Date.UTC({{date_avant|date:"Y"}}, {{duree_axe_x_m}}, {{duree_axe_x_d}}),
+                                pointInterval: 24 * 3600 * 1000 
+                            }]
+                    
                 });
             });
 		</script>
@@ -168,6 +173,7 @@
             </div>
             <!-- /.row -->
             <div class="row">
+
                 <div class="col-lg-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -203,30 +209,6 @@
                         <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; padding-bottom: 45px;"></div>
 
 
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Analyse du revenue
-                            
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                                    <h3 style="color : lawngreen">Revenue : <strong>{{total_commandes}} €</strong></h3>
-                                    <h3 style="color : darkred">Coût Stripe (1,4%) : <strong>{{total_stripe }}</strong></h3>
-                                    <h3 style="color : darkred">Marge MGBCORP (6%) : <strong>{{total_max }}</strong></h3>
-                                    <h3 style="color : darkred">Coût d'achat : <strong>{{total_prix_achat}}</strong></h3>
-                                    <h3 style="color : darkred">Estimation coût livraison : <strong>{{total_estimation_livraison}}</strong></h3>
-                                    <h3 style="color : darkred">Remise : <strong>{{total_remise}}</strong></h3>
-                                    <h2 style="color : lawngreen">Bénéfice net : <strong>{{benefice}} €</strong></h2>            
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-           
-                </div>
-                <!-- /.col-lg-12 -->
-
-
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -234,10 +216,8 @@
            
                 </div>
                 <!-- /.col-lg-8 -->
-                
-                
-                
-                <div class="col-lg-4">
+
+                    <div class="col-lg-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-bell fa-fw"></i> Dernières Commandes
@@ -325,8 +305,33 @@
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
-                    
+
             </div>
+
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Analyse du revenue
+                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                                    <h3 style="color : lawngreen">Revenue : <strong>{{total_commandes}} €</strong></h3>
+                                    <h3 style="color : darkred">Coût Stripe (1,4%) : <strong>{{total_stripe }}</strong></h3>
+                                    <h3 style="color : darkred">Marge MGBCORP (10%) : <strong>{{total_max }}</strong></h3>
+                                    <h3 style="color : darkred">Coût d'achat : <strong>{{total_prix_achat}}</strong></h3>
+                                    <h3 style="color : darkred">Estimation coût livraison : <strong>{{total_estimation_livraison}}</strong></h3>
+                                    <h3 style="color : darkred">Remise : <strong>{{total_remise}}</strong></h3>
+                                    <h2 style="color : lawngreen">Bénéfice net : <strong>{{benefice}} €</strong></h2>            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+           
+                </div>
+                <!-- /.col-lg-12 -->
+               
+        
             
         </div>
       </div>
