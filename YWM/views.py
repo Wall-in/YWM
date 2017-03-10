@@ -436,7 +436,10 @@ def admin_accueil (request):
                 for couple in commande.relationcommande.all() :
                     total_estimation_livraison = total_estimation_livraison + couple.total_estimation_livraison
                     total_prix_achat = total_prix_achat + couple.total_prix_achat
-                intermediaire_BENEFICE = round(commande.total - total_prix_achat - total_estimation_livraison - total_stripe - total_max - total_remise)
+                if commande.total == 0:
+                    intermediaire_BENEFICE = 0
+                else :
+                    intermediaire_BENEFICE = round(commande.total - total_prix_achat - total_estimation_livraison - total_stripe - total_max - total_remise)
         graphique2.append(intermediaire_BENEFICE) 
         graphique.append(intermediaire_CA) 
         i += 1   
