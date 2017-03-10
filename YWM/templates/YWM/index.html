@@ -9,15 +9,13 @@
                 <div class="row ">
                 
                     {% if messages != False %}
-                    <div class="col-md-12" style="padding-top : 15px; margin-bottom : -10px;">
+                    <div class="col-md-12" style="padding-top : 10px; margin-bottom : -10px;">
                         <div class="alert alert-dismissable alert-success">
                         <button contenteditable="false" type="button" class="close" data-dismiss="alert"
                         aria-hidden="true">×</button>
                          {{messages}}</div>
                     </div>
                     {% endif %}  
-                    
-                     
            
                     <div class="col-md-12">
                         <div id="carousel-example" data-interval="5000" class="carousel slide"
@@ -28,6 +26,7 @@
                             </div>
                             <div class="item" style="max-height : 150px;">
                             <img src="{% static 'img/header/1.png' %}" class="center-block">
+                            
                             </div>
                         </div>
                         <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev"><i class="fa fa-angle-left fa-flip-horizontal fa-lg icon-prev text-inverse"></i></a>
@@ -118,26 +117,27 @@
             
             <div class="container">
                 <div class="row ">
-            
-               {% for produit in produits %}
-                    {% if produit.stock > 0 %}
-            <div class="col-md-3">
-                
-                <div class="product-item">
-                <div class="pi-img-wrapper">
-                    <img src="{{produit.photo1.url}}" class="img-responsive" alt="{{produit.nom}}">
-                    <div>
-                    <a href="/boutique/page_produit/?ref={{produit.reference}}" class="btn">Plus de détails</a>
-                    <a href="/user/ajoutfavori/?ref={{produit.reference}}" type="submit" class="btn btn-primary" style="margin : 5px;">Ajouter aux favoris</a>
-                    </div>
-                </div>
-                <h3><a href="/boutique/page_produit/?ref={{produit.reference}}">{{produit.nom}}</a></h3>
-                <div class="pi-price">{{produit.prix}}€</div>
-                <a href="/boutique/ajout/?ref={{produit.reference}}" class="btn add2cart">Ajouter au panier</a>
-                </div>
-            </div>
-                {%endif%}
-            {% endfor %}
+
+                    {% for produit in produits %}
+                            {% if produit.stock > 0 %}
+                                <div class="col-md-3" style="padding-bottom: 10px;">
+                                    
+                                    <div class="product-item">
+                                    <div class="pi-img-wrapper">
+                                        <img src="{{produit.photo1.url}}" class="img-responsive" alt="{{produit.nom}}">
+                                        <div>
+                                        <a href="/boutique/page_produit/?ref={{produit.reference}}" class="btn">Plus de détails</a>
+                                        <a href="/user/ajoutfavori/?ref={{produit.reference}}" type="submit" class="btn btn-primary" style="margin : 5px;">Ajouter aux favoris</a>
+                                        </div>
+                                    </div>
+                                    <h3><a href="/boutique/page_produit/?ref={{produit.reference}}">{{produit.nom}}</a></h3>
+                                    <div class="pi-price">{{produit.prix}}€</div>
+                                    <a href="/boutique/ajout/?ref={{produit.reference}}" class="btn add2cart">Ajouter au panier</a>
+                                    </div>
+                                    
+                                </div>
+                            {%endif%}
+                        {% endfor %}
                 
                 </div>                    
             </div>
